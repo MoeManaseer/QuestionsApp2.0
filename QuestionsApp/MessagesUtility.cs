@@ -39,6 +39,7 @@ namespace QuestionsApp
                 else
                 {
                     tMessageBuilder.AppendLine(ResourcesManager.GetString(tCurrentKey + "_failure"));
+                    tMessageBuilder.AppendLine("\n\nSpecific error:- \n");
                     tMessageBuilder.AppendLine(GetErrorMessage(pResultCode));
                     tIcon = MessageBoxIcon.Error;
                 }
