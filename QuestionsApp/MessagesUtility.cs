@@ -8,6 +8,15 @@ namespace QuestionsApp
 {
     public static class MessagesUtility
     {
+        /// <summary>
+        /// Utility function that shows a message box
+        /// </summary>
+        /// <param name="pMessageCaption">The message caption</param>
+        /// <param name="pMessageString">The message text</param>
+        /// <param name="pResultCode">The resultCode number</param>
+        /// <param name="pMessageButtons">The message custom buttons</param>
+        /// <param name="pCustomMessage">The message custom text</param>
+        /// <returns>The result of the message</returns>
         public static DialogResult ShowMessageForm(string pMessageCaption, string pMessageString, int pResultCode, MessageBoxButtons pMessageButtons = MessageBoxButtons.OK, string pCustomMessage = "")
         {
             DialogResult tResult = DialogResult.OK;
@@ -44,6 +53,11 @@ namespace QuestionsApp
             return tResult;
         }
 
+        /// <summary>
+        /// Utility function that returns a string based on the resultCode provided to it
+        /// </summary>
+        /// <param name="pResultCode">The resultCode number</param>
+        /// <returns>The message corosponding to the result code</returns>
         private static string GetErrorMessage(int pResultCode)
         {
             string tMessage = "";
