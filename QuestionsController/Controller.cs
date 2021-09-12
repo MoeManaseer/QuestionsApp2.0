@@ -37,7 +37,7 @@ namespace QuestionsController
             try
             {
                 // Create a new instance of the bindinglist so that data Isn't duplicated 
-                QuestionsList = new BindingList<Question>();
+                QuestionsList.Clear();
                 tResultCode = DatabaseController.GetData(QuestionsList);
             }
             catch (Exception tException)

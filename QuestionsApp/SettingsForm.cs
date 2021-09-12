@@ -174,16 +174,7 @@ namespace QuestionsFormsTest
                 // this means that there are empty fields
                 if (tControlNames.Count != 0)
                 {
-                    StringBuilder tMessageString = new StringBuilder();
-                    tMessageString.AppendLine("There are empty values.. please fill them.\n");
-                    tMessageString.AppendLine("Empty values:-\n");
-
-                    foreach (string tControlName in tControlNames)
-                    {
-                        tMessageString.AppendLine("- " + tControlName);
-                    }
-
-                    MessagesUtility.ShowMessageForm("saving/testing", "Saving/Testing connection", (int)ResultCodesEnum.CONNECTION_STRING_FAILURE, tMessageString.ToString());
+                    MessagesUtility.ShowMessageForm("Saving Connection String", "The saving of the connection string was ", (int) ResultCodesEnum.EMPTY_FIELDS);
                 }
             }
             catch (Exception tException)
@@ -214,37 +205,7 @@ namespace QuestionsFormsTest
                 // Test the new ConnectionString instance
                 int tResultCode = QuestiosnControllerObject.TestConnection(ConnectionString);
 
-                string tResultMessage = "";
-
-                switch ((ResultCodesEnum) tResultCode)
-                {
-                    case ResultCodesEnum.SUCCESS:
-                        tResultMessage = "Connection success";
-                        break;
-                    case ResultCodesEnum.DATABASE_AUTHENTICATION_FAILUER:
-                        tResultMessage = "User not authenticated";
-                        break;
-                    case ResultCodesEnum.DATABASE_CONNECTION_DENIED:
-                        tResultMessage = "Connection to database denied";
-                        break;
-                    case ResultCodesEnum.DATABASE_CONNECTION_FAILURE:
-                        tResultMessage = "Connection to database failed";
-                        break;
-                    case ResultCodesEnum.SERVER_CONNECTION_FAILURE:
-                        tResultMessage = "Connection to server failed";
-                        break;
-                    case ResultCodesEnum.SERVER_PAUSED:
-                        tResultMessage = "Connection to server failed, server is paused";
-                        break;
-                    case ResultCodesEnum.SERVER_NOT_FOUND_OR_DOWN:
-                        tResultMessage = "Connection to server failed, server was not found or down";
-                        break;
-                    default:
-                        tResultMessage = "Connection failure";
-                        break;
-                }
-
-                MessagesUtility.ShowMessageForm("testing", "Testing result", tResultCode, tResultMessage);
+                MessagesUtility.ShowMessageForm("Testing Result", "The connection was", tResultCode);
             }
             catch (Exception tException)
             {
@@ -272,13 +233,9 @@ namespace QuestionsFormsTest
                 // Save the ConnectionString instance in the database
                 int tResultCode = QuestiosnControllerObject.ChangeConnectionString(ConnectionString);
 
-                MessagesUtility.ShowMessageForm("Save", "Save operation", tResultCode);
-
                 if (ResultCodesEnum.SUCCESS == (ResultCodesEnum) tResultCode)
                 {
-                    // after saving the connection string, refresh the data in the landing form with new data from the database and close the settings form
-                    LandingForm tLandingForm = (LandingForm)Owner;
-                    tLandingForm.LoadUpdateForm(false);
+                    MessagesUtility.ShowMessageForm("Save", "The connection string was saved", tResultCode);
                     Close();
                 }
             }

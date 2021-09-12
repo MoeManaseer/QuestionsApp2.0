@@ -91,7 +91,7 @@ namespace QuestionsFormsTest
 
                 if (tResultCode != (int) ResultCodesEnum.SUCCESS)
                 {
-                    MessagesUtility.ShowMessageForm("form loading", "Form loading", tResultCode);
+                    MessagesUtility.ShowMessageForm("Loading Form", "The form was loaded", tResultCode);
                 }
             }
             catch (Exception tException)
@@ -253,17 +253,8 @@ namespace QuestionsFormsTest
                 // if there was an empty field
                 if (tControlNames.Count != 0)
                 {
-                    StringBuilder tMessageString = new StringBuilder();
-
-                    tMessageString.AppendLine("Empty values:-\n");
-
-                    foreach (string tControlName in tControlNames)
-                    {
-                        tMessageString.AppendLine("- " + tControlName);
-                    }
-
                     string tOperationName = IsNewQuestion ? "add" : "edit";
-                    MessagesUtility.ShowMessageForm(tOperationName, tOperationName + "result", (int) ResultCodesEnum.EMPTY_FIELDS, tMessageString.ToString());
+                    MessagesUtility.ShowMessageForm(tOperationName, "The " + tOperationName + " operation was", (int) ResultCodesEnum.EMPTY_FIELDS);
                 }
             }
             catch (Exception tException)
@@ -327,7 +318,7 @@ namespace QuestionsFormsTest
 
                 if (!tIsUpdatable)
                 {
-                    MessagesUtility.ShowMessageForm("update", "Update result", (int) ResultCodesEnum.NOTHING_TO_UPDATE);
+                    MessagesUtility.ShowMessageForm("Update Question", "The update operation was", (int) ResultCodesEnum.NOTHING_TO_UPDATE);
                 }
             }
             catch (Exception tException)
@@ -357,7 +348,7 @@ namespace QuestionsFormsTest
                     int tResultCode = IsNewQuestion ? QuestionsController.AddQuestion(CurrentQuestion) : QuestionsController.EditQuestion(CurrentQuestion);
 
                     string tOperationName = IsNewQuestion ? "add" : "edit";
-                    MessagesUtility.ShowMessageForm(tOperationName, tOperationName + "result", tResultCode);
+                    MessagesUtility.ShowMessageForm(tOperationName, "The " + tOperationName + " operation was done", tResultCode);
 
                     // If action success close the form
                     if (tResultCode == (int)ResultCodesEnum.SUCCESS)

@@ -82,10 +82,13 @@ namespace QuestionDatabase
             }
             finally
             {
-                // This is to prevent having an error thrown here, if the connection is open then everything else is open
-                if (SQLConnection.State == ConnectionState.Open)
+                if (tSQLCommand != null)
                 {
                     tSQLCommand.Dispose();
+                }
+
+                if (SQLConnection.State == ConnectionState.Open)
+                {
                     SQLConnection.Close();
                 }
             }
@@ -140,11 +143,18 @@ namespace QuestionDatabase
             }
             finally
             {
-                // This is to prevent having an error thrown here, if the connection is open then everything else is open
-                if (SQLConnection.State == ConnectionState.Open)
+                if (tSQLReader != null)
                 {
                     tSQLReader.Close();
+                }
+
+                if (tSQLCommand != null)
+                {
                     tSQLCommand.Dispose();
+                }
+
+                if (SQLConnection.State == ConnectionState.Open)
+                {
                     SQLConnection.Close();
                 }
             }
@@ -253,7 +263,7 @@ namespace QuestionDatabase
         {
             SqlCommand tSQLCommand = null;
             SqlDataReader tSQLReader = null;
-            int tResultCode = (int)ResultCodesEnum.CODE_FAILUER;
+            int tResultCode = (int)ResultCodesEnum.QUESTION_OUT_OF_DATE;
 
             try
             {
@@ -303,11 +313,18 @@ namespace QuestionDatabase
             }
             finally
             {
-                // This is to prevent having an error thrown here, if the connection is open then everything else is open
-                if (SQLConnection.State == ConnectionState.Open)
+                if (tSQLReader != null)
                 {
                     tSQLReader.Close();
+                }
+
+                if (tSQLCommand != null)
+                {
                     tSQLCommand.Dispose();
+                }
+
+                if (SQLConnection.State == ConnectionState.Open)
+                {
                     SQLConnection.Close();
                 }
             }
@@ -381,11 +398,13 @@ namespace QuestionDatabase
             }
             finally
             {
-                // This is to prevent having an error thrown here, if the connection is open then everything else is open
-                if (SQLConnection.State == ConnectionState.Open)
+                if (tSQLCommand != null)
                 {
                     tSQLCommand.Dispose();
-                    tSQLTransaction.Dispose();
+                }
+
+                if (SQLConnection.State == ConnectionState.Open)
+                {
                     SQLConnection.Close();
                 }
             }
@@ -451,11 +470,13 @@ namespace QuestionDatabase
             }
             finally
             {
-                // This is to prevent having an error thrown here, if the connection is open then everything else is open
-                if (SQLConnection.State == ConnectionState.Open)
+                if (tSQLCommand != null)
                 {
                     tSQLCommand.Dispose();
-                    tSQLTransaction.Dispose();
+                }
+
+                if (SQLConnection.State == ConnectionState.Open)
+                {
                     SQLConnection.Close();
                 }
             }
@@ -515,11 +536,13 @@ namespace QuestionDatabase
             }
             finally
             {
-                // This is to prevent having an error thrown here, if the connection is open then everything else is open
-                if (SQLConnection.State == ConnectionState.Open)
+                if (tSQLCommand != null)
                 {
                     tSQLCommand.Dispose();
-                    tSQLTransaction.Dispose();
+                }
+
+                if (SQLConnection.State == ConnectionState.Open)
+                {
                     SQLConnection.Close();
                 }
             }

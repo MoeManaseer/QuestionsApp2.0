@@ -48,9 +48,8 @@ namespace QuestionsFormsTest
             {
                 UpdateTimer = new Timer();
                 UpdateTimer.Tick += new EventHandler(UpdateTimer_Tick);
-                // 5 secs
-                UpdateTimer.Interval = 5000;
-                UpdateTimer.Start();
+                // 20 secs
+                UpdateTimer.Interval = 20000;
             }
             catch (Exception tException)
             {
@@ -89,6 +88,7 @@ namespace QuestionsFormsTest
 
                 if (tResultCode == (int) ResultCodesEnum.SUCCESS)
                 {
+                    UpdateTimer.Start();
                     // Assign the datasource
                     allQuestionsGrid.DataSource = QuestionsControllerObject.QuestionsList;
                     // Enable the form controls
@@ -100,7 +100,7 @@ namespace QuestionsFormsTest
                 }
                 else
                 {
-                    MessagesUtility.ShowMessageForm("form loading", "Form loading", tResultCode);
+                    MessagesUtility.ShowMessageForm("Form Loading", "The form was loaded", tResultCode);
                     ToggleFormControls(false);
                     allQuestionsGrid.DataSource = null;
                 }
@@ -211,9 +211,11 @@ namespace QuestionsFormsTest
         {
             try
             {
+                UpdateTimer.Stop();
                 // Show the QuestionForm and give it the current instance of the QuestionsController
                 QuestionForm tQuestionForm = new QuestionForm(QuestionsControllerObject);
                 tQuestionForm.ShowDialog();
+                UpdateTimer.Start();
             }
             catch (Exception tException)
             {
@@ -232,9 +234,11 @@ namespace QuestionsFormsTest
             {
                 // Get the current selectedRow index
                 int tCurrentIndex = allQuestionsGrid.SelectedRows[0].Index;
+                UpdateTimer.Stop();
                 // Open the questionsForm and pass it the current selected question index
                 QuestionForm tQuestionForm = new QuestionForm(QuestionsControllerObject, tCurrentIndex);
                 tQuestionForm.ShowDialog();
+                UpdateTimer.Start();
             }
             catch (Exception tException)
             {
@@ -254,10 +258,8 @@ namespace QuestionsFormsTest
                 string tMessage = "Are you sure you want to delete this question? deleted questions are lost forever...";
                 string tCaption = "Delete question";
                 MessageBoxButtons tMessageButtons = MessageBoxButtons.YesNo;
-                MessageBoxIcon tIcon = MessageBoxIcon.Warning;
-                DialogResult tResult;
+                DialogResult tResult = MessagesUtility.ShowMessageForm(tCaption, tMessage, (int) ResultCodesEnum.SUCCESS, tMessageButtons);
 
-                tResult = MessageBox.Show(tMessage, tCaption, tMessageButtons, tIcon);
                 if (tResult == DialogResult.Yes)
                 {
                     // Get the current selected question index
@@ -267,7 +269,7 @@ namespace QuestionsFormsTest
                     // Call the questionsController remove function and get a response
                     int tResultCode = QuestionsControllerObject.RemoveQuestion(tSelectedQuestion);
 
-                    MessagesUtility.ShowMessageForm("Remove", "Remove result", tResultCode);
+                    MessagesUtility.ShowMessageForm("Question Remove", "The question was removed", tResultCode);
                 }
             }
             catch (Exception tException)
@@ -302,11 +304,10 @@ namespace QuestionsFormsTest
         {
             try
             {
-                SettingsForm tSettingsForm = new SettingsForm(QuestionsControllerObject)
-                {
-                    Owner = this
-                };
+                UpdateTimer.Stop();
+                SettingsForm tSettingsForm = new SettingsForm(QuestionsControllerObject);
                 tSettingsForm.ShowDialog();
+                LoadUpdateForm(false);
             }
             catch (Exception tException)
             {

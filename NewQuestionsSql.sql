@@ -202,18 +202,3 @@ CREATE OR ALTER PROCEDURE [dbo].Get_StarQuestions
 		WHERE AllQuestions.Id = @Id;
 	END
 GO
-
-SELECT * FROM AllQuestions;
-SELECT * FROM SliderQuestions;
-SELECT * FROM StarQuestions;
-SELECT * FROM SmileyQuestions;
-
-EXEC Update_SmileyQuestions @Text = 'new updated text', @Order = 10, @NumberOfSmiley = 4, @Id = 47;
-
-EXEC Delete_SmileyQuestions @Id = 62;
-EXEC Delete_SmileyQuestions @Id = 61;
-EXEC Update_SmileyQuestions @Text = 'Updated from database', @Order = 99, @NumberOfSmiley = 3, @Id = 53;
-
-EXEC Get_StarQuestions @Id = 57;
-
-EXEC Add_SmileyQuestions @Text = 'new question', @Order = 5, @NumberOfSmiley = 4;
