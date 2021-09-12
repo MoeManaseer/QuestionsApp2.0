@@ -7,8 +7,11 @@ using LoggerUtils;
 using QuestionsController;
 using QuestionEntities;
 using QuestionsApp;
+using System.Configuration;
+using System.Threading;
+using System.Globalization;
 
-namespace QuestionsFormsTest
+namespace QuestionsApp
 {
     public partial class QuestionForm : Form
     {
@@ -18,6 +21,7 @@ namespace QuestionsFormsTest
         private bool IsNewQuestion;
         private List<Control> QuestionsInputFieldList;
         private Dictionary<string, string> QuestionTypesDictionary;
+        private readonly string CurrentLanguage = ConfigurationManager.AppSettings["Language"];
         private readonly string QuestionInputWrapper = "containerQuestion";
         private enum QuestionTypes
         {
@@ -28,6 +32,7 @@ namespace QuestionsFormsTest
         {
             try
             {
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(CurrentLanguage);
                 InitializeComponent();
                 QuestionsController = pQuestionsController;
                 QuestionIndex = -1;
@@ -46,6 +51,7 @@ namespace QuestionsFormsTest
         {
             try
             {
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(CurrentLanguage);
                 InitializeComponent();
                 QuestionsController = pQuestionsController;
                 QuestionIndex = pQuestionIndex;
@@ -74,15 +80,15 @@ namespace QuestionsFormsTest
 
                 if (IsNewQuestion)
                 {
-                    Text = "New Question";
-                    controlBtn.Text = "Add";
+                    Text = MessagesUtility.GetResourceValue("add_title_" + CurrentLanguage);
+                    controlBtn.Text = MessagesUtility.GetResourceValue("add_text_" + CurrentLanguage);
                     ShowExtraQuestionFields();
                 }
                 else
                 {
-                    Text = "Update Question";
+                    Text = MessagesUtility.GetResourceValue("edit_title_" + CurrentLanguage);
                     questionTypeCombo.Enabled = false;
-                    controlBtn.Text = "Update";
+                    controlBtn.Text = MessagesUtility.GetResourceValue("edit_text_" + CurrentLanguage);
                     tResultCode = QuestionsController.GetQuestion(CurrentQuestion);
                     UpdateQuestionFields();
                 }
@@ -91,7 +97,7 @@ namespace QuestionsFormsTest
 
                 if (tResultCode != (int) ResultCodesEnum.SUCCESS)
                 {
-                    MessagesUtility.ShowMessageForm("Loading Form", "The form was loaded", tResultCode);
+                    MessagesUtility.ShowMessageForm("form_loading", tResultCode);
                 }
             }
             catch (Exception tException)
@@ -253,8 +259,8 @@ namespace QuestionsFormsTest
                 // if there was an empty field
                 if (tControlNames.Count != 0)
                 {
-                    string tOperationName = IsNewQuestion ? "add" : "edit";
-                    MessagesUtility.ShowMessageForm(tOperationName, "The " + tOperationName + " operation was", (int) ResultCodesEnum.EMPTY_FIELDS);
+                    string tOperationName = IsNewQuestion ? "add" : "update";
+                    MessagesUtility.ShowMessageForm(tOperationName, (int) ResultCodesEnum.EMPTY_FIELDS);
                 }
             }
             catch (Exception tException)
@@ -318,7 +324,7 @@ namespace QuestionsFormsTest
 
                 if (!tIsUpdatable)
                 {
-                    MessagesUtility.ShowMessageForm("Update Question", "The update operation was", (int) ResultCodesEnum.NOTHING_TO_UPDATE);
+                    MessagesUtility.ShowMessageForm("update", (int) ResultCodesEnum.NOTHING_TO_UPDATE);
                 }
             }
             catch (Exception tException)
@@ -347,8 +353,8 @@ namespace QuestionsFormsTest
                     // Call the corosponding QuestionsController function
                     int tResultCode = IsNewQuestion ? QuestionsController.AddQuestion(CurrentQuestion) : QuestionsController.EditQuestion(CurrentQuestion);
 
-                    string tOperationName = IsNewQuestion ? "add" : "edit";
-                    MessagesUtility.ShowMessageForm(tOperationName, "The " + tOperationName + " operation was done", tResultCode);
+                    string tOperationName = IsNewQuestion ? "add" : "update";
+                    MessagesUtility.ShowMessageForm(tOperationName, tResultCode);
 
                     // If action success close the form
                     if (tResultCode == (int)ResultCodesEnum.SUCCESS)

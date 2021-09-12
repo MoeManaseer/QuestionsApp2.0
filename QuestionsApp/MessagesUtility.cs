@@ -1,6 +1,8 @@
 ﻿using LoggerUtils;
 using QuestionEntities;
 using System;
+using System.Configuration;
+using System.Resources;
 using System.Text;
 using System.Windows.Forms;
 
@@ -8,6 +10,8 @@ namespace QuestionsApp
 {
     public static class MessagesUtility
     {
+        private static readonly string CurrentLanguage = ConfigurationManager.AppSettings["Language"];
+        private static ResourceManager ResourcesManager = new ResourceManager("QuestionsApp.Messages", typeof(Messages).Assembly);
         /// <summary>
         /// Utility function that shows a message box
         /// </summary>
@@ -17,29 +21,25 @@ namespace QuestionsApp
         /// <param name="pMessageButtons">The message custom buttons</param>
         /// <param name="pCustomMessage">The message custom text</param>
         /// <returns>The result of the message</returns>
-        public static DialogResult ShowMessageForm(string pMessageCaption, string pMessageString, int pResultCode, MessageBoxButtons pMessageButtons = MessageBoxButtons.OK, string pCustomMessage = "")
+        public static DialogResult ShowMessageForm(string pMessageKey, int pResultCode, MessageBoxButtons pMessageButtons = MessageBoxButtons.OK, string pCustomMessageKey = "")
         {
             DialogResult tResult = DialogResult.OK;
             try
             {
+                string tCurrentKey = pMessageKey + "_" + CurrentLanguage;
                 StringBuilder tMessageBuilder = new StringBuilder();
-                string tMessageCaption = pMessageCaption;
+                string tMessageCaption = ResourcesManager.GetString(tCurrentKey);
                 MessageBoxIcon tIcon;
 
-                tMessageBuilder.Append(pMessageString);
-
-                if (ResultCodesEnum.SUCCESS == (ResultCodesEnum)pResultCode)
+                if (ResultCodesEnum.SUCCESS == (ResultCodesEnum) pResultCode)
                 {
-                    // Only add successfully when It's a button of type ok
-                    tMessageBuilder.Append(pMessageButtons == MessageBoxButtons.OK ? " successfully" : "");
+                    tMessageBuilder.AppendLine(ResourcesManager.GetString(tCurrentKey + "_" + (string.IsNullOrEmpty(pCustomMessageKey) ? "success" : pCustomMessageKey)));
                     tIcon = MessageBoxIcon.Information;
                 }
                 else
                 {
-                    tMessageBuilder.Append(" unsuccessfully\n\n");
-                    tMessageBuilder.AppendLine("Error Info:");
-                    tMessageBuilder.AppendLine(string.IsNullOrEmpty(pCustomMessage) ? GetErrorMessage(pResultCode) : pCustomMessage);
-
+                    tMessageBuilder.AppendLine(ResourcesManager.GetString(tCurrentKey + "_failure"));
+                    tMessageBuilder.AppendLine(GetErrorMessage(pResultCode));
                     tIcon = MessageBoxIcon.Error;
                 }
 
@@ -51,6 +51,27 @@ namespace QuestionsApp
             }
 
             return tResult;
+        }
+
+        /// <summary>
+        /// Utility function that returns a resource string from the Messages resource file
+        /// </summary>
+        /// <param name="pResourceKey">The key of the string that should be brought back</param>
+        /// <returns>A value from the Messages resource file</returns>
+        public static string GetResourceValue(string pResourceKey)
+        {
+            string tResourceValue = "";
+
+            try
+            {
+                tResourceValue = ResourcesManager.GetString(pResourceKey);
+            }
+            catch (Exception tException)
+            {
+                Logger.WriteExceptionMessage(tException);
+            }
+
+            return tResourceValue;
         }
 
         /// <summary>
@@ -67,43 +88,43 @@ namespace QuestionsApp
                 switch ((ResultCodesEnum) pResultCode)
                 {
                     case ResultCodesEnum.DATABASE_FAILURE:
-                        tMessage = "Database failure, please contact administrator\n";
+                        tMessage = ResourcesManager.GetString("database_failure_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.SUCCESS:
-                        tMessage = "Successful\n";
+                        tMessage = ResourcesManager.GetString("success_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.QUESTION_OUT_OF_DATE:
-                        tMessage = "The question is either deleted or updated, please refresh data and try again\n";
+                        tMessage = ResourcesManager.GetString("question_out_of_date_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.CODE_FAILUER:
-                        tMessage = "Something wrong happend while executing.. please try again or contact an administrator\n";
+                        tMessage = ResourcesManager.GetString("code_failure_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.NOTHING_TO_UPDATE:
-                        tMessage = "Nothing to update\n";
+                        tMessage = ResourcesManager.GetString("nothing_to_update_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.EMPTY_FIELDS:
-                        tMessage = "There are empty fields, please fill them.\n";
+                        tMessage = ResourcesManager.GetString("empty_fields_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.DATABASE_AUTHENTICATION_FAILUER:
-                        tMessage = "User not authenticated";
+                        tMessage = ResourcesManager.GetString("database_authentication_failure_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.DATABASE_CONNECTION_DENIED:
-                        tMessage = "Connection to database denied";
+                        tMessage = ResourcesManager.GetString("database_connection_denied_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.DATABASE_CONNECTION_FAILURE:
-                        tMessage = "Connection to database failed";
+                        tMessage = ResourcesManager.GetString("database_connection_failure_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.SERVER_CONNECTION_FAILURE:
-                        tMessage = "Connection to server failed";
+                        tMessage = ResourcesManager.GetString("server_connection_failure_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.SERVER_PAUSED:
-                        tMessage = "Connection to server failed, server is paused";
+                        tMessage = ResourcesManager.GetString("server_paused_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.SERVER_NOT_FOUND_OR_DOWN:
-                        tMessage = "Connection to server failed, server was not found or down";
+                        tMessage = ResourcesManager.GetString("server_not_found_or_down_" + CurrentLanguage);
                         break;
                     default:
-                        tMessage = "No Message is here for the current resultCode";
+                        tMessage = ResourcesManager.GetString("default_message_" + CurrentLanguage);
                         break;
                 }
             }

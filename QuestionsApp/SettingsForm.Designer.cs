@@ -1,4 +1,4 @@
-﻿namespace QuestionsFormsTest
+﻿namespace QuestionsApp
 {
     partial class SettingsForm
     {
@@ -44,6 +44,9 @@
             this.input_DataSource = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.languageComboBox = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.connectionContainer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,17 +73,19 @@
             // 
             // connectionContainer
             // 
+            resources.ApplyResources(this.connectionContainer, "connectionContainer");
+            this.connectionContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.connectionContainer.Controls.Add(this.input_Password);
             this.connectionContainer.Controls.Add(this.label6);
             this.connectionContainer.Controls.Add(this.input_Username);
             this.connectionContainer.Controls.Add(this.label5);
+            this.connectionContainer.Controls.Add(this.testBtn);
             this.connectionContainer.Controls.Add(this.input_IntegratedSecurity);
             this.connectionContainer.Controls.Add(this.label4);
             this.connectionContainer.Controls.Add(this.input_DatabaseName);
             this.connectionContainer.Controls.Add(this.label3);
             this.connectionContainer.Controls.Add(this.input_DataSource);
             this.connectionContainer.Controls.Add(this.label2);
-            resources.ApplyResources(this.connectionContainer, "connectionContainer");
             this.connectionContainer.Name = "connectionContainer";
             // 
             // input_Password
@@ -107,12 +112,12 @@
             // 
             // input_IntegratedSecurity
             // 
+            resources.ApplyResources(this.input_IntegratedSecurity, "input_IntegratedSecurity");
             this.input_IntegratedSecurity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.input_IntegratedSecurity.FormattingEnabled = true;
             this.input_IntegratedSecurity.Items.AddRange(new object[] {
             resources.GetString("input_IntegratedSecurity.Items"),
             resources.GetString("input_IntegratedSecurity.Items1")});
-            resources.ApplyResources(this.input_IntegratedSecurity, "input_IntegratedSecurity");
             this.input_IntegratedSecurity.Name = "input_IntegratedSecurity";
             this.input_IntegratedSecurity.Tag = "Integrated Security";
             this.input_IntegratedSecurity.SelectedValueChanged += new System.EventHandler(this.input_IntegratedSecurity_SelectedValueChanged);
@@ -146,19 +151,42 @@
             // 
             // label7
             // 
-            this.label7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             resources.ApplyResources(this.label7, "label7");
+            this.label7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label7.Name = "label7";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // languageComboBox
+            // 
+            resources.ApplyResources(this.languageComboBox, "languageComboBox");
+            this.languageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.languageComboBox.FormattingEnabled = true;
+            this.languageComboBox.Items.AddRange(new object[] {
+            resources.GetString("languageComboBox.Items"),
+            resources.GetString("languageComboBox.Items1")});
+            this.languageComboBox.Name = "languageComboBox";
+            this.languageComboBox.SelectedValueChanged += new System.EventHandler(this.languageComboBox_SelectedValueChanged);
+            // 
+            // label8
+            // 
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.Name = "label8";
             // 
             // SettingsForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.languageComboBox);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.connectionContainer);
             this.Controls.Add(this.exitBtn);
             this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.testBtn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "SettingsForm";
@@ -166,6 +194,7 @@
             this.connectionContainer.ResumeLayout(false);
             this.connectionContainer.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -185,5 +214,8 @@
         private System.Windows.Forms.TextBox input_DataSource;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox languageComboBox;
+        private System.Windows.Forms.Label label8;
     }
 }

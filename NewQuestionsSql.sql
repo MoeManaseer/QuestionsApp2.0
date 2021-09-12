@@ -10,9 +10,9 @@ GO
 IF OBJECT_ID(N'[dbo].[AllQuestions]', N'U') IS NULL  
 		CREATE TABLE [dbo].[AllQuestions](
 			[Id] [int] IDENTITY(1,1) NOT NULL,
-			[Type] [varchar](50) NOT NULL,
+			[Type] [nvarchar](50) NOT NULL,
 			[Order] [int] NOT NULL,
-			[Text] [varchar](255) NOT NULL,
+			[Text] [nvarchar](255) NOT NULL,
 		 CONSTRAINT [PK_AllQuestions] PRIMARY KEY CLUSTERED 
 		(
 			[Id] ASC
@@ -26,8 +26,8 @@ IF OBJECT_ID(N'[dbo].[SliderQuestions]', N'U') IS NULL
 				[Id] [int] NOT NULL,
 				[StartValue] [int] NOT NULL,
 				[EndValue] [int] NOT NULL,
-				[StartValueCaption] [varchar](250) NOT NULL,
-				[EndValueCaption] [varchar](250) NOT NULL,
+				[StartValueCaption] [nvarchar](250) NOT NULL,
+				[EndValueCaption] [nvarchar](250) NOT NULL,
 			 CONSTRAINT [IX_SliderQuestions] UNIQUE NONCLUSTERED 
 			(
 				[Id] ASC
@@ -78,7 +78,7 @@ IF OBJECT_ID(N'[dbo].[StarQuestions]', N'U') IS NULL
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].Add_StarQuestions
- (@Text VARCHAR(250), @Order INT, @NumberOfStar INT, @Id INT = NULL OUTPUT)
+ (@Text nvarchar(250), @Order INT, @NumberOfStar INT, @Id INT = NULL OUTPUT)
  AS  
  BEGIN   
 	SET XACT_ABORT ON;
@@ -89,7 +89,7 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].Add_SliderQuestions  
- (    @Text VARCHAR(250),    @Order  INT,    @StartValue INT,    @EndValue INT,    @StartValueCaption VARCHAR(250),    @EndValueCaption VARCHAR(250), @Id INT = NULL OUTPUT)  
+ (    @Text nvarchar(250),    @Order  INT,    @StartValue INT,    @EndValue INT,    @StartValueCaption nvarchar(250),    @EndValueCaption nvarchar(250), @Id INT = NULL OUTPUT)  
  AS  
  BEGIN   
 	SET XACT_ABORT ON;
@@ -100,7 +100,7 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].Add_SmileyQuestions  
- (    @Text VARCHAR(255),    @Order  INT,    @NumberOfSmiley INT, @Id INT = NULL OUTPUT)  
+ (    @Text nvarchar(255),    @Order  INT,    @NumberOfSmiley INT, @Id INT = NULL OUTPUT)  
  AS  
  BEGIN   
 	SET XACT_ABORT ON;
@@ -111,7 +111,7 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].Update_StarQuestions  
-(    @Text VARCHAR(255),    @Order  INT,    @NumberOfStar INT,    @Id INT  )  
+(    @Text nvarchar(255),    @Order  INT,    @NumberOfStar INT,    @Id INT  )  
 AS  
 BEGIN   
 	 SET XACT_ABORT ON;
@@ -121,7 +121,7 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].Update_SliderQuestions  
-(    @Text VARCHAR(250),    @Order  INT,    @StartValue INT,    @EndValue INT,    @StartValueCaption VARCHAR(250),    @EndValueCaption VARCHAR(250),    @Id INT  )
+(    @Text nvarchar(250),    @Order  INT,    @StartValue INT,    @EndValue INT,    @StartValueCaption nvarchar(250),    @EndValueCaption nvarchar(250),    @Id INT  )
 AS  
 BEGIN   
 	SET XACT_ABORT ON;      
@@ -131,7 +131,7 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].Update_SmileyQuestions  
-(    @Text VARCHAR(255),    @Order  INT,    @NumberOfSmiley INT,    @Id INT  )  
+(    @Text nvarchar(255),    @Order  INT,    @NumberOfSmiley INT,    @Id INT  )  
 AS  
 BEGIN   
 	SET XACT_ABORT ON;      

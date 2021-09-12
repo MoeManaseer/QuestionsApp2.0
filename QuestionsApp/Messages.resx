@@ -1,0 +1,348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="add_ar" xml:space="preserve">
+    <value>اضافة</value>
+  </data>
+  <data name="add_ar_failure" xml:space="preserve">
+    <value>لم يتم إضافة السؤال بنجاح</value>
+  </data>
+  <data name="add_ar_success" xml:space="preserve">
+    <value>تم إضافة السؤال بنجاح</value>
+  </data>
+  <data name="add_en" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="add_en_failure" xml:space="preserve">
+    <value>The question was not added successfully</value>
+  </data>
+  <data name="add_en_success" xml:space="preserve">
+    <value>The question was added successfully</value>
+  </data>
+  <data name="add_text_ar" xml:space="preserve">
+    <value>اضافة</value>
+  </data>
+  <data name="add_text_en" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="add_title_ar" xml:space="preserve">
+    <value>اضافة سؤال</value>
+  </data>
+  <data name="add_title_en" xml:space="preserve">
+    <value>Add Question</value>
+  </data>
+  <data name="code_failure_ar" xml:space="preserve">
+    <value>حدث خطأ ما أثناء التنفيذ .. يرجى المحاولة مرة أخرى أو الاتصال بالمسؤول.</value>
+  </data>
+  <data name="code_failure_en" xml:space="preserve">
+    <value>Something wrong happend while executing.. please try again or contact an administrator.</value>
+  </data>
+  <data name="database_authentication_failure_ar" xml:space="preserve">
+    <value> لم تتم مصادقة المستخدم الحالي.</value>
+  </data>
+  <data name="database_authentication_failure_en" xml:space="preserve">
+    <value>the current user is not authenticated.</value>
+  </data>
+  <data name="database_connection_denied_ar" xml:space="preserve">
+    <value> تم رفض الاتصال بقاعدة البيانات.</value>
+  </data>
+  <data name="database_connection_denied_en" xml:space="preserve">
+    <value>the connection to the database was denied.</value>
+  </data>
+  <data name="database_connection_failure_ar" xml:space="preserve">
+    <value>فشل الاتصال بقاعدة البيانات.</value>
+  </data>
+  <data name="database_connection_failure_en" xml:space="preserve">
+    <value>the connection to the database failed.</value>
+  </data>
+  <data name="database_failure_ar" xml:space="preserve">
+    <value>فشل قاعدة البيانات ، يرجى الاتصال بالمسؤول.</value>
+  </data>
+  <data name="database_failure_en" xml:space="preserve">
+    <value>Database failure, please contact administrator.</value>
+  </data>
+  <data name="default_message_ar" xml:space="preserve">
+    <value>حدث خطأ ، يرجى إعادة تشغيل التطبيق أو الاتصال بالمسؤول.</value>
+  </data>
+  <data name="default_message_en" xml:space="preserve">
+    <value>An error happened, please restart the application or contact an administrator.</value>
+  </data>
+  <data name="edit_text_ar" xml:space="preserve">
+    <value>تحديث</value>
+  </data>
+  <data name="edit_text_en" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="edit_title_ar" xml:space="preserve">
+    <value>تحديث سؤال</value>
+  </data>
+  <data name="edit_title_en" xml:space="preserve">
+    <value>Update Question</value>
+  </data>
+  <data name="empty_fields_ar" xml:space="preserve">
+    <value>هناك حقول فارغة ، يرجى تعبئتها</value>
+  </data>
+  <data name="empty_fields_en" xml:space="preserve">
+    <value>There are empty fields, please fill them</value>
+  </data>
+  <data name="exit_ar" xml:space="preserve">
+    <value>خروج</value>
+  </data>
+  <data name="exit_ar_text" xml:space="preserve">
+    <value>هل أنت متأكد من انك تريد الخروج؟</value>
+  </data>
+  <data name="exit_en" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="exit_en_text" xml:space="preserve">
+    <value>Are you sure you want to exit?</value>
+  </data>
+  <data name="form_loading_ar" xml:space="preserve">
+    <value>تحميل التطبيق</value>
+  </data>
+  <data name="form_loading_ar_failure" xml:space="preserve">
+    <value>حدث خطأ ما أثناء تحميل التطبيق</value>
+  </data>
+  <data name="form_loading_en" xml:space="preserve">
+    <value>Application loading</value>
+  </data>
+  <data name="form_loading_en_failure" xml:space="preserve">
+    <value>Something wrong happend while loading the application</value>
+  </data>
+  <data name="language_ar" xml:space="preserve">
+    <value>لغة</value>
+  </data>
+  <data name="language_ar_text" xml:space="preserve">
+    <value>تم تغيير اللغة بنجاح ، يرجى إعادة تشغيل التطبيق لمشاهدة التغييرات الجديدة ..</value>
+  </data>
+  <data name="language_en" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="language_en_text" xml:space="preserve">
+    <value>The language was changed successfully, please restart the application to see the new changes..</value>
+  </data>
+  <data name="nothing_to_update_ar" xml:space="preserve">
+    <value>فشل التحديث ، لا يوجد شيء لتحديثه.</value>
+  </data>
+  <data name="nothing_to_update_en" xml:space="preserve">
+    <value>Update failed, there is nothing to update.</value>
+  </data>
+  <data name="question_out_of_date_ar" xml:space="preserve">
+    <value>حدث خطأ ما ، السؤال الحالي إما تم حذفه أو تحديثه ، يرجى التحديث والمحاولة مرة أخرى.</value>
+  </data>
+  <data name="question_out_of_date_en" xml:space="preserve">
+    <value>Something wrong happened, the current question is either deleted or updated, please refresh and try again.</value>
+  </data>
+  <data name="remove_ar" xml:space="preserve">
+    <value>ازالة</value>
+  </data>
+  <data name="remove_ar_confirmation" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف السؤال المحدد؟ لا يمكن استرداد الأسئلة التي تمت إزالتها.</value>
+  </data>
+  <data name="remove_ar_failure" xml:space="preserve">
+    <value>لم تتم إزالة السؤال</value>
+  </data>
+  <data name="remove_ar_success" xml:space="preserve">
+    <value>تمت إزالة السؤال بنجاح</value>
+  </data>
+  <data name="remove_en" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="remove_en_confirmation" xml:space="preserve">
+    <value>Are you sure you want to delete the selected question? removed questions cann't be recoverd.</value>
+  </data>
+  <data name="remove_en_failure" xml:space="preserve">
+    <value>The question was not removed</value>
+  </data>
+  <data name="remove_en_success" xml:space="preserve">
+    <value>The question was removed successfully</value>
+  </data>
+  <data name="server_connection_failure_ar" xml:space="preserve">
+    <value>فشل الاتصال بالخادم.</value>
+  </data>
+  <data name="server_connection_failure_en" xml:space="preserve">
+    <value> the connection to the server failed.</value>
+  </data>
+  <data name="server_not_found_or_down_ar" xml:space="preserve">
+    <value>إما أن الخادم معطل أو أنه غير موجود.</value>
+  </data>
+  <data name="server_not_found_or_down_en" xml:space="preserve">
+    <value>the server is either down or it doesn't exist.</value>
+  </data>
+  <data name="server_paused_ar" xml:space="preserve">
+    <value>الخادم متوقف مؤقتًا حاليًا.</value>
+  </data>
+  <data name="server_paused_en" xml:space="preserve">
+    <value>the server is currently paused.</value>
+  </data>
+  <data name="settings_save_ar_failure" xml:space="preserve">
+    <value>لم يتم حفظ الإعدادات ...</value>
+  </data>
+  <data name="settings_save_ar_success" xml:space="preserve">
+    <value>تم حفظ الإعدادات بنجاح</value>
+  </data>
+  <data name="settings_save_en_failure" xml:space="preserve">
+    <value>The settings were not saved...</value>
+  </data>
+  <data name="settings_save_en_success" xml:space="preserve">
+    <value>The settings were successfuly saved</value>
+  </data>
+  <data name="success_ar" xml:space="preserve">
+    <value>ناجح.</value>
+  </data>
+  <data name="success_en" xml:space="preserve">
+    <value>Successful.</value>
+  </data>
+  <data name="test_ar" xml:space="preserve">
+    <value>اختبار الاتصال</value>
+  </data>
+  <data name="test_ar_failure" xml:space="preserve">
+    <value>لم يكن الاتصال بقاعدة البيانات ناجحًا</value>
+  </data>
+  <data name="test_ar_success" xml:space="preserve">
+    <value>تم الاتصال بقاعدة البيانات بنجاح</value>
+  </data>
+  <data name="test_en" xml:space="preserve">
+    <value>Test Connection</value>
+  </data>
+  <data name="test_en_failure" xml:space="preserve">
+    <value>The connection to the database wasn't successful</value>
+  </data>
+  <data name="test_en_success" xml:space="preserve">
+    <value>The connection to the database was successful</value>
+  </data>
+  <data name="update_ar" xml:space="preserve">
+    <value>تحديث</value>
+  </data>
+  <data name="update_ar_failure" xml:space="preserve">
+    <value>لم يتم تحديث السؤال بنجاح</value>
+  </data>
+  <data name="update_ar_success" xml:space="preserve">
+    <value>تم تحديث السؤال بنجاح</value>
+  </data>
+  <data name="update_en" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="update_en_failure" xml:space="preserve">
+    <value>The question was not updated successfully</value>
+  </data>
+  <data name="update_en_success" xml:space="preserve">
+    <value>The question was updated successfully</value>
+  </data>
+</root>

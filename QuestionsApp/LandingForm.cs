@@ -1,22 +1,26 @@
 ﻿using LoggerUtils;
 using QuestionEntities;
-using QuestionsApp;
 using QuestionsController;
 using System;
 using System.ComponentModel;
+using System.Configuration;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 
-namespace QuestionsFormsTest
+namespace QuestionsApp
 {
     public partial class LandingForm : Form
     {
         private Controller QuestionsControllerObject;
-        private Timer UpdateTimer;
+        private System.Windows.Forms.Timer UpdateTimer;
 
         public LandingForm()
         {
             try
             {
+                string tCurrentLanguage = ConfigurationManager.AppSettings["Language"];
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(tCurrentLanguage);
                 InitializeComponent();
                 QuestionsControllerObject = new Controller();
             }
@@ -46,7 +50,7 @@ namespace QuestionsFormsTest
         {
             try
             {
-                UpdateTimer = new Timer();
+                UpdateTimer = new System.Windows.Forms.Timer();
                 UpdateTimer.Tick += new EventHandler(UpdateTimer_Tick);
                 // 20 secs
                 UpdateTimer.Interval = 20000;
@@ -100,7 +104,7 @@ namespace QuestionsFormsTest
                 }
                 else
                 {
-                    MessagesUtility.ShowMessageForm("Form Loading", "The form was loaded", tResultCode);
+                    MessagesUtility.ShowMessageForm("form_loading", tResultCode);
                     ToggleFormControls(false);
                     allQuestionsGrid.DataSource = null;
                 }
@@ -255,10 +259,8 @@ namespace QuestionsFormsTest
         {
             try
             {
-                string tMessage = "Are you sure you want to delete this question? deleted questions are lost forever...";
-                string tCaption = "Delete question";
                 MessageBoxButtons tMessageButtons = MessageBoxButtons.YesNo;
-                DialogResult tResult = MessagesUtility.ShowMessageForm(tCaption, tMessage, (int) ResultCodesEnum.SUCCESS, tMessageButtons);
+                DialogResult tResult = MessagesUtility.ShowMessageForm("remove", (int) ResultCodesEnum.SUCCESS, tMessageButtons, "confirmation");
 
                 if (tResult == DialogResult.Yes)
                 {
@@ -269,7 +271,7 @@ namespace QuestionsFormsTest
                     // Call the questionsController remove function and get a response
                     int tResultCode = QuestionsControllerObject.RemoveQuestion(tSelectedQuestion);
 
-                    MessagesUtility.ShowMessageForm("Question Remove", "The question was removed", tResultCode);
+                    MessagesUtility.ShowMessageForm("remove", tResultCode);
                 }
             }
             catch (Exception tException)

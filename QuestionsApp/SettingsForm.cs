@@ -2,20 +2,23 @@
 using System.Windows.Forms;
 using System.Reflection;
 using LoggerUtils;
-using System.Text;
 using System.Collections;
 using QuestionDatabase;
 using QuestionEntities;
 using QuestionsController;
 using QuestionsApp;
+using System.Globalization;
+using System.Threading;
+using System.Configuration;
 
-namespace QuestionsFormsTest
+namespace QuestionsApp
 {
     public partial class SettingsForm : Form
     {
         private Control ConnectionValuesContainer;
         private ConnectionString ConnectionString;
         private Controller QuestiosnControllerObject;
+        private string CurrentLanguage;
         private readonly string InputControlsWrapperName = "connectionContainer";
         private readonly string UsernameInput = "input_Username";
         private readonly string PasswordInput = "input_Password";
@@ -24,6 +27,8 @@ namespace QuestionsFormsTest
         {
             try
             {
+                CurrentLanguage = ConfigurationManager.AppSettings["Language"];
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(CurrentLanguage);
                 InitializeComponent();
                 QuestiosnControllerObject = pQuestionsController;
                 ConnectionString = new ConnectionString(QuestiosnControllerObject.GetConnectionString());
@@ -174,7 +179,7 @@ namespace QuestionsFormsTest
                 // this means that there are empty fields
                 if (tControlNames.Count != 0)
                 {
-                    MessagesUtility.ShowMessageForm("Saving Connection String", "The saving of the connection string was ", (int) ResultCodesEnum.EMPTY_FIELDS);
+                    MessagesUtility.ShowMessageForm("settings_save", (int) ResultCodesEnum.EMPTY_FIELDS);
                 }
             }
             catch (Exception tException)
@@ -205,7 +210,7 @@ namespace QuestionsFormsTest
                 // Test the new ConnectionString instance
                 int tResultCode = QuestiosnControllerObject.TestConnection(ConnectionString);
 
-                MessagesUtility.ShowMessageForm("Testing Result", "The connection was", tResultCode);
+                MessagesUtility.ShowMessageForm("test", tResultCode);
             }
             catch (Exception tException)
             {
@@ -235,7 +240,7 @@ namespace QuestionsFormsTest
 
                 if (ResultCodesEnum.SUCCESS == (ResultCodesEnum) tResultCode)
                 {
-                    MessagesUtility.ShowMessageForm("Save", "The connection string was saved", tResultCode);
+                    MessagesUtility.ShowMessageForm("settings_save", tResultCode);
                     Close();
                 }
             }
@@ -273,6 +278,40 @@ namespace QuestionsFormsTest
             {
                 // whenever the IntegratedSecuirty value is changed, check what the type of it is and disable/enable certain controls
                 CheckIntegratedSecurityValue();
+            }
+            catch (Exception tException)
+            {
+                Logger.WriteExceptionMessage(tException);
+            }
+        }
+
+        private void languageComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string tNewSelectedLanguage = languageComboBox.Text.Substring(0, 2).ToLower();
+
+                if (!tNewSelectedLanguage.Equals(CurrentLanguage))
+                {
+                    CurrentLanguage = tNewSelectedLanguage;
+                    ChangeCurrentLanguage();
+                }
+            }
+            catch (Exception tException)
+            {
+                Logger.WriteExceptionMessage(tException);
+            }
+        }
+
+        private void ChangeCurrentLanguage()
+        {
+            try
+            {
+                MessagesUtility.ShowMessageForm("language", (int) ResultCodesEnum.SUCCESS, MessageBoxButtons.OK, "text");
+
+                var tConfigurationManager = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                tConfigurationManager.AppSettings.Settings["Language"].Value = CurrentLanguage;
+                tConfigurationManager.Save(ConfigurationSaveMode.Modified);
             }
             catch (Exception tException)
             {
