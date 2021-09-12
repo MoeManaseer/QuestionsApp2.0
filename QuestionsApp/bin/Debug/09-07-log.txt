@@ -1,0 +1,95 @@
+09/07 15:54:04 :-
+Object reference not set to an instance of an object.
+   at QuestionDatabase.ConnectionString.ToString() in D:\source\repos\QuestionsApp\QuestionDatabase\ConnectionString.cs:line 81
+
+09/07 15:54:04 :-
+The ConnectionString property has not been initialized.
+   at System.Data.SqlClient.SqlConnection.PermissionDemand()
+   at System.Data.SqlClient.SqlConnectionFactory.PermissionDemand(DbConnection outerConnection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at QuestionDatabase.DatabaseController.GetData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 111
+
+09/07 16:04:39 :-
+Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at QuestionDatabase.DatabaseController.UpdateData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 177
+
+09/07 16:05:03 :-
+Order can't be bigger than 100 or lower than 0
+   at QuestionEntities.Question.set_Order(Int32 value)
+   at QuestionDatabase.DatabaseController.GetData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 123
+
+09/07 16:05:41 :-
+Order can't be bigger than 100 or lower than 0
+   at QuestionEntities.Question.set_Order(Int32 value)
+   at QuestionDatabase.DatabaseController.GetData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 123
+
+09/07 16:06:06 :-
+Order can't be bigger than 100 or lower than 0
+   at QuestionEntities.Question.set_Order(Int32 value)
+   at QuestionDatabase.DatabaseController.GetData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 123
+
+09/07 16:06:28 :-
+Order can't be bigger than 100 or lower than 0
+   at QuestionEntities.Question.set_Order(Int32 value)
+   at QuestionDatabase.DatabaseController.GetData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 123
+
+09/07 16:06:46 :-
+Order can't be bigger than 100 or lower than 0
+   at QuestionEntities.Question.set_Order(Int32 value)
+   at QuestionDatabase.DatabaseController.GetData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 123
+
+09/07 16:06:49 :-
+Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at QuestionDatabase.DatabaseController.UpdateData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 177
+
+09/07 16:07:08 :-
+Order can't be bigger than 100 or lower than 0
+   at QuestionEntities.Question.set_Order(Int32 value)
+   at QuestionDatabase.DatabaseController.GetData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 123
+
+09/07 16:07:20 :-
+Order can't be bigger than 100 or lower than 0
+   at QuestionEntities.Question.set_Order(Int32 value)
+   at QuestionDatabase.DatabaseController.GetData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 123
+
+09/07 16:07:38 :-
+Order can't be bigger than 100 or lower than 0
+   at QuestionEntities.Question.set_Order(Int32 value)
+   at QuestionDatabase.DatabaseController.GetData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 123
+
+09/07 16:08:12 :-
+Order can't be bigger than 100 or lower than 0
+   at QuestionEntities.Question.set_Order(Int32 value)
+   at QuestionDatabase.DatabaseController.GetData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 123
+
+09/07 16:09:03 :-
+Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at QuestionDatabase.DatabaseController.UpdateData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 177
+
+09/07 16:11:51 :-
+Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at QuestionDatabase.DatabaseController.UpdateData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 177
+
+09/07 16:17:12 :-
+Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at QuestionDatabase.DatabaseController.UpdateData(List`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 177
+
