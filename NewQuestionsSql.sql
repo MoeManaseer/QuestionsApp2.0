@@ -20,6 +20,11 @@ IF OBJECT_ID(N'[dbo].[AllQuestions]', N'U') IS NULL
 		) ON [PRIMARY]
 GO
 
+IF OBJECT_ID(N'[dbo].[Order_constraint]') IS NULL  
+		ALTER TABLE AllQuestions
+		ADD CONSTRAINT Order_constraint CHECK ([Order] >= 0 AND [Order] <= 100);
+GO
+
 IF OBJECT_ID(N'[dbo].[SliderQuestions]', N'U') IS NULL 
 	BEGIN
 			CREATE TABLE [dbo].[SliderQuestions](
@@ -41,6 +46,12 @@ IF OBJECT_ID(N'[dbo].[SliderQuestions]', N'U') IS NULL
 	END
 GO
 
+IF OBJECT_ID(N'[dbo].[Values_constraints]') IS NULL  
+		ALTER TABLE [SliderQuestions]
+		ADD CONSTRAINT Values_constraints CHECK (StartValue <= EndValue AND StartValue >= 0 AND StartValue <= 100 AND EndValue >= 0 AND EndValue <= 100);
+GO
+
+
 IF OBJECT_ID(N'[dbo].[SmileyQuestions]', N'U') IS NULL  
 	BEGIN
 		CREATE TABLE [dbo].[SmileyQuestions](
@@ -59,6 +70,11 @@ IF OBJECT_ID(N'[dbo].[SmileyQuestions]', N'U') IS NULL
 	END
 GO
 
+IF OBJECT_ID(N'[dbo].[SmileyNumber_constraints]') IS NULL  
+		ALTER TABLE SmileyQuestions
+		ADD CONSTRAINT SmileyNumber_constraints CHECK (NumberOfSmiley >= 0 AND NumberOfSmiley <= 5);
+GO
+
 IF OBJECT_ID(N'[dbo].[StarQuestions]', N'U') IS NULL  
 	BEGIN
 		CREATE TABLE [dbo].[StarQuestions](
@@ -75,6 +91,11 @@ IF OBJECT_ID(N'[dbo].[StarQuestions]', N'U') IS NULL
 
 		ALTER TABLE [dbo].[StarQuestions] CHECK CONSTRAINT [FK_StarQuestions_AllQuestions]
 	END
+GO
+
+IF OBJECT_ID(N'[dbo].[StarNumber_constraint]') IS NULL  
+		ALTER TABLE StarQuestions
+		ADD CONSTRAINT StarNumber_constraint CHECK (NumberOfStar >= 0 AND NumberOfStar <= 10);
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].Add_StarQuestions
