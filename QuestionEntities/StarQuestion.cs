@@ -13,7 +13,7 @@ namespace QuestionEntities
             get { return _NumberOfStar; }
             set
             {
-                if (value > 10 || value < 0)
+                if (value > 10 || value < 1)
                 {
                     throw new Exception("NumberOfStar validation error, please make sure the value is lower than or equal 10 and bigger than 0");
                 }

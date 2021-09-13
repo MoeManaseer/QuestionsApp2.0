@@ -72,7 +72,7 @@ GO
 
 IF OBJECT_ID(N'[dbo].[SmileyNumber_constraints]') IS NULL  
 		ALTER TABLE SmileyQuestions
-		ADD CONSTRAINT SmileyNumber_constraints CHECK (NumberOfSmiley >= 0 AND NumberOfSmiley <= 5);
+		ADD CONSTRAINT SmileyNumber_constraints CHECK (NumberOfSmiley >= 2 AND NumberOfSmiley <= 5);
 GO
 
 IF OBJECT_ID(N'[dbo].[StarQuestions]', N'U') IS NULL  
@@ -95,7 +95,7 @@ GO
 
 IF OBJECT_ID(N'[dbo].[StarNumber_constraint]') IS NULL  
 		ALTER TABLE StarQuestions
-		ADD CONSTRAINT StarNumber_constraint CHECK (NumberOfStar >= 0 AND NumberOfStar <= 10);
+		ADD CONSTRAINT StarNumber_constraint CHECK (NumberOfStar >= 1 AND NumberOfStar <= 10);
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].Add_StarQuestions

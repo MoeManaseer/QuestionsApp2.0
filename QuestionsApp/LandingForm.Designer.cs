@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LandingForm));
             this.allQuestionsGrid = new System.Windows.Forms.DataGridView();
             this.refreshBtn = new System.Windows.Forms.Button();
@@ -45,14 +46,23 @@
             // 
             // allQuestionsGrid
             // 
-            resources.ApplyResources(this.allQuestionsGrid, "allQuestionsGrid");
             this.allQuestionsGrid.AllowUserToAddRows = false;
             this.allQuestionsGrid.AllowUserToDeleteRows = false;
             this.allQuestionsGrid.AllowUserToResizeColumns = false;
             this.allQuestionsGrid.AllowUserToResizeRows = false;
             this.allQuestionsGrid.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.allQuestionsGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.allQuestionsGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.allQuestionsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.allQuestionsGrid.GridColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(this.allQuestionsGrid, "allQuestionsGrid");
             this.allQuestionsGrid.MultiSelect = false;
             this.allQuestionsGrid.Name = "allQuestionsGrid";
             this.allQuestionsGrid.ReadOnly = true;
@@ -104,15 +114,15 @@
             // 
             // label2
             // 
-            resources.ApplyResources(this.label2, "label2");
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
             // settingsPanel
             // 
-            resources.ApplyResources(this.settingsPanel, "settingsPanel");
             this.settingsPanel.Controls.Add(this.settingsBtn);
             this.settingsPanel.Controls.Add(this.refreshBtn);
+            resources.ApplyResources(this.settingsPanel, "settingsPanel");
             this.settingsPanel.Name = "settingsPanel";
             // 
             // refreshButton

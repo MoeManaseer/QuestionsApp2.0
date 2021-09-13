@@ -12,6 +12,17 @@ namespace QuestionDatabase
     {
         private SqlConnection SQLConnection;
         public ConnectionString ConnectionString { private set; get; }
+        private const string TestQueryString = "SELECT 1 FROM AllQuestions;";
+        private const string GetAllQuestionsQueryString = "SELECT * FROM AllQuestions;";
+        private const string IdKey = "Id";
+        private const string TextKey = "Text";
+        private const string TypeKey = "Type";
+        private const string OrderKey = "Order";
+        private const string QuestionsString = "Questions";
+        private const string AddString = "Add";
+        private const string UpdateString = "Update";
+        private const string DeleteString = "Delete";
+        private const string GetString = "Get";
 
         public DatabaseController()
         {
@@ -64,7 +75,7 @@ namespace QuestionDatabase
                 SQLConnection = new SqlConnection(tConnectionString.ToString());
                 
                 // We know that the AllQuestions table will always exist in the database, so test selecting from it
-                tSQLCommand = new SqlCommand("SELECT 1 FROM AllQuestions;", SQLConnection);
+                tSQLCommand = new SqlCommand(TestQueryString, SQLConnection);
 
                 SQLConnection.Open();
                 tSQLCommand.ExecuteNonQuery();
@@ -112,7 +123,7 @@ namespace QuestionDatabase
             {
                 SQLConnection = new SqlConnection(ConnectionString.ToString());
 
-                tSQLCommand = new SqlCommand("SELECT * FROM AllQuestions;", SQLConnection);
+                tSQLCommand = new SqlCommand(GetAllQuestionsQueryString, SQLConnection);
                 SQLConnection.Open();
 
                 tSQLReader = tSQLCommand.ExecuteReader(CommandBehavior.KeyInfo);
@@ -122,10 +133,10 @@ namespace QuestionDatabase
                 {
                     Question tQuestion = new Question();
 
-                    tQuestion.Id = Convert.ToInt32(tSQLReader["Id"]);
-                    tQuestion.Text = Convert.ToString(tSQLReader["Text"]);
-                    tQuestion.Type = Convert.ToString(tSQLReader["Type"]);
-                    tQuestion.Order = Convert.ToInt32(tSQLReader["Order"]);
+                    tQuestion.Id = Convert.ToInt32(tSQLReader[IdKey]);
+                    tQuestion.Text = Convert.ToString(tSQLReader[TextKey]);
+                    tQuestion.Type = Convert.ToString(tSQLReader[TypeKey]);
+                    tQuestion.Order = Convert.ToInt32(tSQLReader[OrderKey]);
 
                     pQuestionsList.Add(tQuestion);
                 }
@@ -162,6 +173,11 @@ namespace QuestionDatabase
             return tResultCode;
         }
 
+        /// <summary>
+        /// Updates the data in the pQuestionsList with fresh data from the database
+        /// </summary>
+        /// <param name="pQuestionsList">The list of Questions</param>
+        /// <returns>a result code to be used to determine if success or failure</returns>
         public int UpdateData(BindingList<Question> pQuestionsList)
         {
             SqlCommand tSQLCommand = null;
@@ -172,7 +188,7 @@ namespace QuestionDatabase
             {
                 SQLConnection = new SqlConnection(ConnectionString.ToString());
 
-                tSQLCommand = new SqlCommand("SELECT * FROM AllQuestions", SQLConnection);
+                tSQLCommand = new SqlCommand(GetAllQuestionsQueryString, SQLConnection);
                 SQLConnection.Open();
 
                 tSQLReader = tSQLCommand.ExecuteReader(CommandBehavior.KeyInfo);
@@ -185,7 +201,7 @@ namespace QuestionDatabase
                     while (true)
                     {
                         bool tNextRow = false;
-                        int tCurrentId = Convert.ToInt32(tSQLReader["Id"]);
+                        int tCurrentId = Convert.ToInt32(tSQLReader[IdKey]);
 
                         if (pQuestionsList[tQuestionsListPointer].Id < tCurrentId)
                         {
@@ -196,9 +212,9 @@ namespace QuestionDatabase
                             Question tQuestion = pQuestionsList[tQuestionsListPointer].Id > tCurrentId ? new Question() : pQuestionsList[tQuestionsListPointer];
 
                             tQuestion.Id = tCurrentId;
-                            tQuestion.Text = Convert.ToString(tSQLReader["Text"]);
-                            tQuestion.Type = Convert.ToString(tSQLReader["Type"]);
-                            tQuestion.Order = Convert.ToInt32(tSQLReader["Order"]);
+                            tQuestion.Text = Convert.ToString(tSQLReader[TextKey]);
+                            tQuestion.Type = Convert.ToString(tSQLReader[TypeKey]);
+                            tQuestion.Order = Convert.ToInt32(tSQLReader[OrderKey]);
 
                             if (pQuestionsList[tQuestionsListPointer].Id > tCurrentId)
                             {
@@ -216,23 +232,25 @@ namespace QuestionDatabase
                             break;
                     }
 
+                    // Makes sure to add any extra questions present in the database but not in the List
                     while (tSQLReader.Read())
                     {
                         Question tQuestion = new Question();
 
-                        tQuestion.Id = Convert.ToInt32(tSQLReader["Id"]);
-                        tQuestion.Text = Convert.ToString(tSQLReader["Text"]);
-                        tQuestion.Type = Convert.ToString(tSQLReader["Type"]);
-                        tQuestion.Order = Convert.ToInt32(tSQLReader["Order"]);
+                        tQuestion.Id = Convert.ToInt32(tSQLReader[IdKey]);
+                        tQuestion.Text = Convert.ToString(tSQLReader[TextKey]);
+                        tQuestion.Type = Convert.ToString(tSQLReader[TypeKey]);
+                        tQuestion.Order = Convert.ToInt32(tSQLReader[OrderKey]);
 
                         pQuestionsList.Add(tQuestion);
                         tQuestionsListPointer++;
                     }
-
-                    for (int i = tQuestionsListPointer; i < pQuestionsList.Count; i++)
-                    {
-                        pQuestionsList.RemoveAt(pQuestionsList.Count - 1);
-                    }
+                }
+                
+                // Makes sure that if there are any extra questions, remove them
+                for (int i = tQuestionsListPointer; i < pQuestionsList.Count; i++)
+                {
+                    pQuestionsList.RemoveAt(pQuestionsList.Count - 1);
                 }
             }
             catch (SqlException tSQLException)
@@ -247,11 +265,18 @@ namespace QuestionDatabase
             }
             finally
             {
-                // This is to prevent having an error thrown here, if the connection is open then everything else is open
-                if (SQLConnection.State == ConnectionState.Open)
+                if (tSQLReader != null)
                 {
                     tSQLReader.Close();
+                }
+
+                if (tSQLCommand != null)
+                {
                     tSQLCommand.Dispose();
+                }
+
+                if (SQLConnection.State == ConnectionState.Open)
+                {
                     SQLConnection.Close();
                 }
             }
@@ -259,6 +284,11 @@ namespace QuestionDatabase
             return tResultCode;
         }
 
+        /// <summary>
+        /// Returns a Question retrieved from the database
+        /// </summary>
+        /// <param name="pQuestion">The Question reference to fill the data in</param>
+        /// <returns>a result code to be used to determine if success or failure</returns>
         public int GetQuestion(Question pQuestion)
         {
             SqlCommand tSQLCommand = null;
@@ -268,18 +298,18 @@ namespace QuestionDatabase
             try
             {
                 int tQuestionId = pQuestion.Id;
-                string tQuestionTableName = pQuestion.Type + "Questions";
+                string tQuestionTableName = pQuestion.Type + QuestionsString;
 
                 SQLConnection = new SqlConnection(ConnectionString.ToString());
                 SQLConnection.Open();
 
                 // Get the correct procedure based on the tablename
-                tSQLCommand = new SqlCommand("Get_" + tQuestionTableName, SQLConnection)
+                tSQLCommand = new SqlCommand(GetString + "_" + tQuestionTableName, SQLConnection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
 
-                tSQLCommand.Parameters.Add(new SqlParameter("@Id", tQuestionId));
+                tSQLCommand.Parameters.Add(new SqlParameter("@" + IdKey, tQuestionId));
 
                 tSQLReader = tSQLCommand.ExecuteReader(CommandBehavior.KeyInfo);
 
@@ -345,14 +375,14 @@ namespace QuestionDatabase
 
             try
             {
-                string tTableName = pQuestion.Type + "Questions";
+                string tTableName = pQuestion.Type + QuestionsString;
 
                 SQLConnection = new SqlConnection(ConnectionString.ToString());
                 SQLConnection.Open();
                 tSQLTransaction = SQLConnection.BeginTransaction();
 
                 // Get the correct procedure based on the tablename
-                tSQLCommand = new SqlCommand("Add_" + tTableName, SQLConnection, tSQLTransaction)
+                tSQLCommand = new SqlCommand(AddString + "_" + tTableName, SQLConnection, tSQLTransaction)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -367,7 +397,7 @@ namespace QuestionDatabase
                 }
 
                 // Add the Id of the question as an output parameter to be used later on
-                SqlParameter tNewQuestionId = new SqlParameter("@Id", SqlDbType.Int)
+                SqlParameter tNewQuestionId = new SqlParameter("@" + IdKey, SqlDbType.Int)
                 {
                     Direction = ParameterDirection.Output
                 };
@@ -425,14 +455,14 @@ namespace QuestionDatabase
 
             try
             {
-                string tTableName = pQuestion.Type + "Questions";
+                string tTableName = pQuestion.Type + QuestionsString;
 
                 SQLConnection = new SqlConnection(ConnectionString.ToString());
                 SQLConnection.Open();
                 tSQLTransaction = SQLConnection.BeginTransaction();
 
                 // Get the correct procedure based on the tablename
-                tSQLCommand = new SqlCommand("Update_" + tTableName, SQLConnection, tSQLTransaction)
+                tSQLCommand = new SqlCommand(UpdateString + "_" + tTableName, SQLConnection, tSQLTransaction)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -447,7 +477,7 @@ namespace QuestionDatabase
                 }
 
                 // Add the question Id individually
-                tSQLCommand.Parameters.Add(new SqlParameter("@Id", pQuestion.Id));
+                tSQLCommand.Parameters.Add(new SqlParameter("@" + IdKey, pQuestion.Id));
 
                 tResultCode = tSQLCommand.ExecuteNonQuery() != 0 ? (int)ResultCodesEnum.SUCCESS : (int)ResultCodesEnum.QUESTION_OUT_OF_DATE;
 
@@ -498,7 +528,7 @@ namespace QuestionDatabase
             try
             {
                 // Get the table name to remove the quesand the question id
-                string tTableName = pQuestion.Type + "Questions";
+                string tTableName = pQuestion.Type + QuestionsString;
                 int tQuestionId = pQuestion.Id;
 
                 SQLConnection = new SqlConnection(ConnectionString.ToString());
@@ -506,13 +536,13 @@ namespace QuestionDatabase
                 tSQLTransaction = SQLConnection.BeginTransaction();
 
                 // Get the correct procedure based on the tablename
-                tSQLCommand = new SqlCommand("Delete_" + tTableName, SQLConnection, tSQLTransaction)
+                tSQLCommand = new SqlCommand(DeleteString + "_" + tTableName, SQLConnection, tSQLTransaction)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
 
                 // Add the @Id param with the current question Id
-                tSQLCommand.Parameters.Add(new SqlParameter("@Id", tQuestionId));
+                tSQLCommand.Parameters.Add(new SqlParameter("@" + IdKey, tQuestionId));
 
                 tResultCode = tSQLCommand.ExecuteNonQuery() != 0 ? (int)ResultCodesEnum.SUCCESS : (int)ResultCodesEnum.QUESTION_OUT_OF_DATE;
 

@@ -259,42 +259,6 @@ namespace QuestionsApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to تحديث.
-        /// </summary>
-        internal static string edit_text_ar {
-            get {
-                return ResourceManager.GetString("edit_text_ar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update.
-        /// </summary>
-        internal static string edit_text_en {
-            get {
-                return ResourceManager.GetString("edit_text_en", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تحديث سؤال.
-        /// </summary>
-        internal static string edit_title_ar {
-            get {
-                return ResourceManager.GetString("edit_title_ar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update Question.
-        /// </summary>
-        internal static string edit_title_en {
-            get {
-                return ResourceManager.GetString("edit_title_en", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to هناك حقول فارغة ، يرجى تعبئتها.
         /// </summary>
         internal static string empty_fields_ar {
@@ -394,7 +358,7 @@ namespace QuestionsApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to تم تغيير اللغة بنجاح ، يرجى إعادة تشغيل التطبيق لمشاهدة التغييرات الجديدة ...
+        ///   Looks up a localized string similar to تم تغيير اللغة بنجاح ، سيتم إعادة تشغيل التطبيق ليعكس التغييرات الجديدة ...
         /// </summary>
         internal static string language_ar_text {
             get {
@@ -412,7 +376,7 @@ namespace QuestionsApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The language was changed successfully, please restart the application to see the new changes...
+        ///   Looks up a localized string similar to The language was changed successfully, the application will restart to reflect the new changes...
         /// </summary>
         internal static string language_en_text {
             get {
@@ -435,6 +399,24 @@ namespace QuestionsApp {
         internal static string nothing_to_update_en {
             get {
                 return ResourceManager.GetString("nothing_to_update_en", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الترتيب.
+        /// </summary>
+        internal static string Order_ar {
+            get {
+                return ResourceManager.GetString("Order_ar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order.
+        /// </summary>
+        internal static string Order_en {
+            get {
+                return ResourceManager.GetString("Order_en", resourceCulture);
             }
         }
         
@@ -619,6 +601,24 @@ namespace QuestionsApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to خطأ دقيق: -.
+        /// </summary>
+        internal static string specific_error_ar {
+            get {
+                return ResourceManager.GetString("specific_error_ar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exact error :-.
+        /// </summary>
+        internal static string specific_error_en {
+            get {
+                return ResourceManager.GetString("specific_error_en", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ناجح..
         /// </summary>
         internal static string success_ar {
@@ -691,6 +691,42 @@ namespace QuestionsApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to النص.
+        /// </summary>
+        internal static string Text_ar {
+            get {
+                return ResourceManager.GetString("Text_ar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text.
+        /// </summary>
+        internal static string Text_en {
+            get {
+                return ResourceManager.GetString("Text_en", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to النوع.
+        /// </summary>
+        internal static string Type_ar {
+            get {
+                return ResourceManager.GetString("Type_ar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string Type_en {
+            get {
+                return ResourceManager.GetString("Type_en", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تحديث.
         /// </summary>
         internal static string update_ar {
@@ -741,6 +777,42 @@ namespace QuestionsApp {
         internal static string update_en_success {
             get {
                 return ResourceManager.GetString("update_en_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تحديث.
+        /// </summary>
+        internal static string update_text_ar {
+            get {
+                return ResourceManager.GetString("update_text_ar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string update_text_en {
+            get {
+                return ResourceManager.GetString("update_text_en", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تحديث سؤال.
+        /// </summary>
+        internal static string update_title_ar {
+            get {
+                return ResourceManager.GetString("update_title_ar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Question.
+        /// </summary>
+        internal static string update_title_en {
+            get {
+                return ResourceManager.GetString("update_title_en", resourceCulture);
             }
         }
     }

@@ -12,6 +12,23 @@ namespace QuestionsApp
     {
         private static readonly string CurrentLanguage = ConfigurationManager.AppSettings["Language"];
         private static ResourceManager ResourcesManager = new ResourceManager("QuestionsApp.Messages", typeof(Messages).Assembly);
+        private const string FailureString = "failure";
+        private const string SuccessString = "success";
+        private const string SpecificErrorKey = "specific_error";
+        private const string DatabaseFailureKey = "database_failure";
+        private const string SuccessKey = "success";
+        private const string QuestionOutOfDateKey = "question_out_of_date";
+        private const string CodeFailureKey = "code_failure";
+        private const string NothingToUpdateKey = "nothing_to_update";
+        private const string EmptyFieldKey = "empty_fields";
+        private const string DatabaseAuthenticationFailureKey = "database_authentication_failure";
+        private const string DatabaseConnectionDeniedKey = "database_connection_denied";
+        private const string DatabaseConnectionFailureKey = "database_connection_failure";
+        private const string ServerConnectionFailureKey = "server_connection_failure";
+        private const string ServerPausedKey = "server_paused";
+        private const string ServerNotFoundKey = "server_not_found_or_down";
+        private const string DefaultMessageKey = "default_message";
+
         /// <summary>
         /// Utility function that shows a message box
         /// </summary>
@@ -33,13 +50,13 @@ namespace QuestionsApp
 
                 if (ResultCodesEnum.SUCCESS == (ResultCodesEnum) pResultCode)
                 {
-                    tMessageBuilder.AppendLine(ResourcesManager.GetString(tCurrentKey + "_" + (string.IsNullOrEmpty(pCustomMessageKey) ? "success" : pCustomMessageKey)));
+                    tMessageBuilder.AppendLine(ResourcesManager.GetString(tCurrentKey + "_" + (string.IsNullOrEmpty(pCustomMessageKey) ? SuccessString : pCustomMessageKey)));
                     tIcon = MessageBoxIcon.Information;
                 }
                 else
                 {
-                    tMessageBuilder.AppendLine(ResourcesManager.GetString(tCurrentKey + "_failure"));
-                    tMessageBuilder.AppendLine("\n\nSpecific error:- \n");
+                    tMessageBuilder.AppendLine(ResourcesManager.GetString(tCurrentKey + "_" + FailureString));
+                    tMessageBuilder.AppendLine("\n\n" + GetResourceValue(SpecificErrorKey + "_" + CurrentLanguage) + "\n");
                     tMessageBuilder.AppendLine(GetErrorMessage(pResultCode));
                     tIcon = MessageBoxIcon.Error;
                 }
@@ -89,43 +106,43 @@ namespace QuestionsApp
                 switch ((ResultCodesEnum) pResultCode)
                 {
                     case ResultCodesEnum.DATABASE_FAILURE:
-                        tMessage = ResourcesManager.GetString("database_failure_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(DatabaseFailureKey + "_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.SUCCESS:
-                        tMessage = ResourcesManager.GetString("success_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(SuccessKey + "_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.QUESTION_OUT_OF_DATE:
-                        tMessage = ResourcesManager.GetString("question_out_of_date_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(QuestionOutOfDateKey + "_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.CODE_FAILUER:
-                        tMessage = ResourcesManager.GetString("code_failure_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(CodeFailureKey + "_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.NOTHING_TO_UPDATE:
-                        tMessage = ResourcesManager.GetString("nothing_to_update_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(NothingToUpdateKey + "_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.EMPTY_FIELDS:
-                        tMessage = ResourcesManager.GetString("empty_fields_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(EmptyFieldKey + "_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.DATABASE_AUTHENTICATION_FAILUER:
-                        tMessage = ResourcesManager.GetString("database_authentication_failure_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(DatabaseAuthenticationFailureKey + "_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.DATABASE_CONNECTION_DENIED:
-                        tMessage = ResourcesManager.GetString("database_connection_denied_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(DatabaseConnectionDeniedKey + "_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.DATABASE_CONNECTION_FAILURE:
-                        tMessage = ResourcesManager.GetString("database_connection_failure_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(DatabaseConnectionFailureKey + "_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.SERVER_CONNECTION_FAILURE:
-                        tMessage = ResourcesManager.GetString("server_connection_failure_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(ServerConnectionFailureKey + "_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.SERVER_PAUSED:
-                        tMessage = ResourcesManager.GetString("server_paused_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(ServerPausedKey + "_" + CurrentLanguage);
                         break;
                     case ResultCodesEnum.SERVER_NOT_FOUND_OR_DOWN:
-                        tMessage = ResourcesManager.GetString("server_not_found_or_down_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(ServerNotFoundKey + "_" + CurrentLanguage);
                         break;
                     default:
-                        tMessage = ResourcesManager.GetString("default_message_" + CurrentLanguage);
+                        tMessage = ResourcesManager.GetString(DefaultMessageKey + "_" + CurrentLanguage);
                         break;
                 }
             }

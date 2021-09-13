@@ -73,7 +73,6 @@
             // 
             // connectionContainer
             // 
-            resources.ApplyResources(this.connectionContainer, "connectionContainer");
             this.connectionContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.connectionContainer.Controls.Add(this.input_Password);
             this.connectionContainer.Controls.Add(this.label6);
@@ -86,6 +85,7 @@
             this.connectionContainer.Controls.Add(this.label3);
             this.connectionContainer.Controls.Add(this.input_DataSource);
             this.connectionContainer.Controls.Add(this.label2);
+            resources.ApplyResources(this.connectionContainer, "connectionContainer");
             this.connectionContainer.Name = "connectionContainer";
             // 
             // input_Password
@@ -112,12 +112,12 @@
             // 
             // input_IntegratedSecurity
             // 
-            resources.ApplyResources(this.input_IntegratedSecurity, "input_IntegratedSecurity");
             this.input_IntegratedSecurity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.input_IntegratedSecurity.FormattingEnabled = true;
             this.input_IntegratedSecurity.Items.AddRange(new object[] {
             resources.GetString("input_IntegratedSecurity.Items"),
             resources.GetString("input_IntegratedSecurity.Items1")});
+            resources.ApplyResources(this.input_IntegratedSecurity, "input_IntegratedSecurity");
             this.input_IntegratedSecurity.Name = "input_IntegratedSecurity";
             this.input_IntegratedSecurity.Tag = "Integrated Security";
             this.input_IntegratedSecurity.SelectedValueChanged += new System.EventHandler(this.input_IntegratedSecurity_SelectedValueChanged);
@@ -151,8 +151,8 @@
             // 
             // label7
             // 
-            resources.ApplyResources(this.label7, "label7");
             this.label7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
             // 
             // label1
@@ -162,12 +162,12 @@
             // 
             // languageComboBox
             // 
-            resources.ApplyResources(this.languageComboBox, "languageComboBox");
             this.languageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.languageComboBox.FormattingEnabled = true;
             this.languageComboBox.Items.AddRange(new object[] {
             resources.GetString("languageComboBox.Items"),
             resources.GetString("languageComboBox.Items1")});
+            resources.ApplyResources(this.languageComboBox, "languageComboBox");
             this.languageComboBox.Name = "languageComboBox";
             this.languageComboBox.SelectedValueChanged += new System.EventHandler(this.languageComboBox_SelectedValueChanged);
             // 

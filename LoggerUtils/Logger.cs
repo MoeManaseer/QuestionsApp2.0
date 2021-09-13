@@ -6,6 +6,10 @@ namespace LoggerUtils
 {
     public static class Logger
     {
+        private const string TxtFileExtension = "-log.txt";
+        private const string GeneralTimeFormat = "MM-dd";
+        private const string ExactTimeFormat = "MM/dd HH:mm:ss";
+
         /// <summary>
         /// Helper function to write exceptions to a txt file
         /// </summary>
@@ -15,12 +19,12 @@ namespace LoggerUtils
             try
             {
                 DateTime tDateTime = DateTime.Now;
-                string tCurrentDate = tDateTime.ToString("MM-dd");
-                string tFilePath = Environment.CurrentDirectory + "\\" + tCurrentDate + "-log.txt";
+                string tCurrentDate = tDateTime.ToString(GeneralTimeFormat);
+                string tFilePath = Environment.CurrentDirectory + "\\" + tCurrentDate + TxtFileExtension;
                 CheckFile(tFilePath);
 
                 StringBuilder tErrorString = new StringBuilder();
-                tErrorString.AppendLine(tDateTime.ToString("MM/dd HH:mm:ss") + " :-");
+                tErrorString.AppendLine(tDateTime.ToString(ExactTimeFormat) + " :-");
                 tErrorString.AppendLine(pThrownException.Message);
                 tErrorString.AppendLine(pThrownException.StackTrace);
                 tErrorString.AppendLine(pThrownException.HelpLink);

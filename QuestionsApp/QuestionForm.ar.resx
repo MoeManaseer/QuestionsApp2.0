@@ -221,7 +221,7 @@
     <value>12, 400</value>
   </data>
   <data name="exitButton.Text" xml:space="preserve">
-    <value>خروج</value>
+    <value>الغاء</value>
   </data>
   <data name="controlBtn.Location" type="System.Drawing.Point, System.Drawing">
     <value>96, 400</value>

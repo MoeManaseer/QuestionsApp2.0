@@ -12,17 +12,28 @@ namespace QuestionsApp
 {
     public partial class LandingForm : Form
     {
-        private Controller QuestionsControllerObject;
+        private QuestionsHandler QuestionsHandlerObject;
         private System.Windows.Forms.Timer UpdateTimer;
+        private string CurrentLanguage;
+        private const string LanguageString = "Language";
+        private const string FormLoadingKey = "form_loading";
+        private const string IdKey = "Id";
+        private const string OrderKey = "Order";
+        private const string TypeKey = "Type";
+        private const string TextKey = "Text";
+        private const string ArabicKey = "ar";
+        private const string SettingsPanelString = "settingsPanel";
+        private const string RemoveKey = "remove";
+        private const string ConfirmationKey = "confirmation";
 
         public LandingForm()
         {
             try
             {
-                string tCurrentLanguage = ConfigurationManager.AppSettings["Language"];
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(tCurrentLanguage);
+                CurrentLanguage = ConfigurationManager.AppSettings[LanguageString];
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(CurrentLanguage);
                 InitializeComponent();
-                QuestionsControllerObject = new Controller();
+                QuestionsHandlerObject = new QuestionsHandler();
             }
             catch (Exception tException)
             {
@@ -88,13 +99,12 @@ namespace QuestionsApp
 
             try
             {
-                tResultCode = pIsUpdate ? QuestionsControllerObject.UpdateQuestionsData() : QuestionsControllerObject.FillQuestionsData();
+                tResultCode = pIsUpdate ? QuestionsHandlerObject.UpdateQuestionsData() : QuestionsHandlerObject.FillQuestionsData();
 
                 if (tResultCode == (int) ResultCodesEnum.SUCCESS)
                 {
-                    UpdateTimer.Start();
                     // Assign the datasource
-                    allQuestionsGrid.DataSource = QuestionsControllerObject.QuestionsList;
+                    allQuestionsGrid.DataSource = QuestionsHandlerObject.QuestionsList;
                     // Enable the form controls
                     ToggleFormControls(true);
                     // Check the list for being empty or not
@@ -104,9 +114,8 @@ namespace QuestionsApp
                 }
                 else
                 {
-                    MessagesUtility.ShowMessageForm("form_loading", tResultCode);
+                    MessagesUtility.ShowMessageForm(FormLoadingKey, tResultCode);
                     ToggleFormControls(false);
-                    allQuestionsGrid.DataSource = null;
                 }
             }
             catch (Exception tException)
@@ -122,11 +131,27 @@ namespace QuestionsApp
         {
             try
             {
-                allQuestionsGrid.Columns["Id"].Visible = false;
-                allQuestionsGrid.Columns["Order"].Width = 80;
-                allQuestionsGrid.Columns["Type"].Width = 80;
-                allQuestionsGrid.Columns["Text"].Width = 298;
-                allQuestionsGrid.Columns["Text"].DisplayIndex = 3;
+                allQuestionsGrid.Columns[IdKey].Visible = false;
+                allQuestionsGrid.Columns[OrderKey].Width = 80;
+                allQuestionsGrid.Columns[TypeKey].Width = 80;
+                allQuestionsGrid.Columns[TextKey].Width = 298;
+                allQuestionsGrid.Columns[TextKey].DisplayIndex = 3;
+
+                allQuestionsGrid.Columns[OrderKey].HeaderText = MessagesUtility.GetResourceValue(OrderKey + "_" + CurrentLanguage);
+                allQuestionsGrid.Columns[TypeKey].HeaderText = MessagesUtility.GetResourceValue(TypeKey + "_" + CurrentLanguage);
+                allQuestionsGrid.Columns[TextKey].HeaderText = MessagesUtility.GetResourceValue(TextKey + "_" + CurrentLanguage);
+
+                if (CurrentLanguage.ToLower().Equals(ArabicKey))
+                {
+                    allQuestionsGrid.Columns[OrderKey].DisplayIndex = 3;
+                    allQuestionsGrid.Columns[TextKey].DisplayIndex = 1;
+                    allQuestionsGrid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                    foreach(DataGridViewColumn tGridColumn in allQuestionsGrid.Columns)
+                    {
+                        tGridColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
+                }
             }
             catch (Exception tException)
             {
@@ -144,7 +169,7 @@ namespace QuestionsApp
                 // Disable/Enable every control in the form except for the exit/settings buttons
                 foreach (Control tFormControl in Controls)
                 {
-                    if (!tFormControl.Name.Equals("settingsPanel"))
+                    if (!tFormControl.Name.Equals(SettingsPanelString))
                     {
                         tFormControl.Enabled = pValue;
                     }
@@ -217,7 +242,7 @@ namespace QuestionsApp
             {
                 UpdateTimer.Stop();
                 // Show the QuestionForm and give it the current instance of the QuestionsController
-                QuestionForm tQuestionForm = new QuestionForm(QuestionsControllerObject);
+                QuestionForm tQuestionForm = new QuestionForm(QuestionsHandlerObject);
                 tQuestionForm.ShowDialog();
                 UpdateTimer.Start();
             }
@@ -240,7 +265,7 @@ namespace QuestionsApp
                 int tCurrentIndex = allQuestionsGrid.SelectedRows[0].Index;
                 UpdateTimer.Stop();
                 // Open the questionsForm and pass it the current selected question index
-                QuestionForm tQuestionForm = new QuestionForm(QuestionsControllerObject, tCurrentIndex);
+                QuestionForm tQuestionForm = new QuestionForm(QuestionsHandlerObject, tCurrentIndex);
                 tQuestionForm.ShowDialog();
                 UpdateTimer.Start();
             }
@@ -260,18 +285,19 @@ namespace QuestionsApp
             try
             {
                 MessageBoxButtons tMessageButtons = MessageBoxButtons.YesNo;
-                DialogResult tResult = MessagesUtility.ShowMessageForm("remove", (int) ResultCodesEnum.SUCCESS, tMessageButtons, "confirmation");
+                DialogResult tResult = MessagesUtility.ShowMessageForm(RemoveKey, (int) ResultCodesEnum.SUCCESS, tMessageButtons, ConfirmationKey);
 
                 if (tResult == DialogResult.Yes)
                 {
                     // Get the current selected question index
                     int tCurrentSelectedIndex = allQuestionsGrid.CurrentRow.Index;
                     // Get the current question to be removed
-                    Question tSelectedQuestion = QuestionsControllerObject.QuestionsList[tCurrentSelectedIndex];
+                    Question tSelectedQuestion = QuestionsHandlerObject.QuestionsList[tCurrentSelectedIndex];
                     // Call the questionsController remove function and get a response
-                    int tResultCode = QuestionsControllerObject.RemoveQuestion(tSelectedQuestion);
+                    int tResultCode = QuestionsHandlerObject.RemoveQuestion(tSelectedQuestion);
 
-                    MessagesUtility.ShowMessageForm("remove", tResultCode);
+                    MessagesUtility.ShowMessageForm(RemoveKey, tResultCode);
+                    CheckList();
                 }
             }
             catch (Exception tException)
@@ -307,7 +333,7 @@ namespace QuestionsApp
             try
             {
                 UpdateTimer.Stop();
-                SettingsForm tSettingsForm = new SettingsForm(QuestionsControllerObject);
+                SettingsForm tSettingsForm = new SettingsForm(QuestionsHandlerObject);
                 tSettingsForm.ShowDialog();
                 LoadUpdateForm(false);
             }
@@ -341,9 +367,9 @@ namespace QuestionsApp
                 }
 
                 // Sort the items in the QuestionsList
-                QuestionsControllerObject.SortQuestions(tTempCurrentClickedCloumn.Name, direction);
+                QuestionsHandlerObject.SortQuestions(tTempCurrentClickedCloumn.Name, direction);
                 // Reset the DataSource with the new sorted QuestionsList
-                allQuestionsGrid.DataSource = QuestionsControllerObject.QuestionsList;
+                allQuestionsGrid.DataSource = QuestionsHandlerObject.QuestionsList;
 
                 // Reupdate the column headers and reformat the table
                 UpdateQuestionsListTable();
@@ -371,7 +397,7 @@ namespace QuestionsApp
         {
             try
             {
-                LoadUpdateForm(false);
+                LoadUpdateForm(true);
             }
             catch (Exception tException)
             {

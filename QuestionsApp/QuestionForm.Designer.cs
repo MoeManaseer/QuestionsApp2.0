@@ -82,9 +82,9 @@
             // 
             // containerStar
             // 
-            resources.ApplyResources(this.containerStar, "containerStar");
             this.containerStar.Controls.Add(this.input_NumberOfStar);
             this.containerStar.Controls.Add(this.textbox4);
+            resources.ApplyResources(this.containerStar, "containerStar");
             this.containerStar.Name = "containerStar";
             // 
             // input_NumberOfStar
@@ -105,9 +105,9 @@
             // 
             // containerSmiley
             // 
-            resources.ApplyResources(this.containerSmiley, "containerSmiley");
             this.containerSmiley.Controls.Add(this.input_NumberOfSmiley);
             this.containerSmiley.Controls.Add(this.label3);
+            resources.ApplyResources(this.containerSmiley, "containerSmiley");
             this.containerSmiley.Name = "containerSmiley";
             // 
             // input_NumberOfSmiley
@@ -144,7 +144,6 @@
             // 
             // containerSlider
             // 
-            resources.ApplyResources(this.containerSlider, "containerSlider");
             this.containerSlider.Controls.Add(this.input_EndValueCaption);
             this.containerSlider.Controls.Add(this.label7);
             this.containerSlider.Controls.Add(this.input_StartValueCaption);
@@ -153,6 +152,7 @@
             this.containerSlider.Controls.Add(this.label5);
             this.containerSlider.Controls.Add(this.input_StartValue);
             this.containerSlider.Controls.Add(this.label4);
+            resources.ApplyResources(this.containerSlider, "containerSlider");
             this.containerSlider.Name = "containerSlider";
             // 
             // input_EndValueCaption
@@ -213,9 +213,9 @@
             // 
             // questionTypeCombo
             // 
-            resources.ApplyResources(this.questionTypeCombo, "questionTypeCombo");
             this.questionTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.questionTypeCombo.FormattingEnabled = true;
+            resources.ApplyResources(this.questionTypeCombo, "questionTypeCombo");
             this.questionTypeCombo.Name = "questionTypeCombo";
             this.questionTypeCombo.SelectedValueChanged += new System.EventHandler(this.questionTypeCombo_SelectedValueChanged);
             // 
@@ -240,7 +240,6 @@
             // 
             // containerQuestion
             // 
-            resources.ApplyResources(this.containerQuestion, "containerQuestion");
             this.containerQuestion.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.containerQuestion.Controls.Add(this.label1);
             this.containerQuestion.Controls.Add(this.input_Text);
@@ -249,6 +248,7 @@
             this.containerQuestion.Controls.Add(this.containerStar);
             this.containerQuestion.Controls.Add(this.containerSlider);
             this.containerQuestion.Controls.Add(this.containerSmiley);
+            resources.ApplyResources(this.containerQuestion, "containerQuestion");
             this.containerQuestion.Name = "containerQuestion";
             // 
             // QuestionForm

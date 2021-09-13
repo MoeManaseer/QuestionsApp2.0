@@ -183,18 +183,6 @@
   <data name="default_message_en" xml:space="preserve">
     <value>An error happened, please restart the application or contact an administrator.</value>
   </data>
-  <data name="edit_text_ar" xml:space="preserve">
-    <value>تحديث</value>
-  </data>
-  <data name="edit_text_en" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="edit_title_ar" xml:space="preserve">
-    <value>تحديث سؤال</value>
-  </data>
-  <data name="edit_title_en" xml:space="preserve">
-    <value>Update Question</value>
-  </data>
   <data name="empty_fields_ar" xml:space="preserve">
     <value>هناك حقول فارغة ، يرجى تعبئتها</value>
   </data>
@@ -229,19 +217,25 @@
     <value>لغة</value>
   </data>
   <data name="language_ar_text" xml:space="preserve">
-    <value>تم تغيير اللغة بنجاح ، يرجى إعادة تشغيل التطبيق لمشاهدة التغييرات الجديدة ..</value>
+    <value>تم تغيير اللغة بنجاح ، سيتم إعادة تشغيل التطبيق ليعكس التغييرات الجديدة ..</value>
   </data>
   <data name="language_en" xml:space="preserve">
     <value>Language</value>
   </data>
   <data name="language_en_text" xml:space="preserve">
-    <value>The language was changed successfully, please restart the application to see the new changes..</value>
+    <value>The language was changed successfully, the application will restart to reflect the new changes..</value>
   </data>
   <data name="nothing_to_update_ar" xml:space="preserve">
     <value>فشل التحديث ، لا يوجد شيء لتحديثه.</value>
   </data>
   <data name="nothing_to_update_en" xml:space="preserve">
     <value>Update failed, there is nothing to update.</value>
+  </data>
+  <data name="Order_ar" xml:space="preserve">
+    <value>الترتيب</value>
+  </data>
+  <data name="Order_en" xml:space="preserve">
+    <value>Order</value>
   </data>
   <data name="question_out_of_date_ar" xml:space="preserve">
     <value>حدث خطأ ما ، السؤال الحالي إما تم حذفه أو تحديثه ، يرجى التحديث والمحاولة مرة أخرى.</value>
@@ -303,6 +297,12 @@
   <data name="settings_save_en_success" xml:space="preserve">
     <value>The settings were successfuly saved</value>
   </data>
+  <data name="specific_error_ar" xml:space="preserve">
+    <value>خطأ دقيق: -</value>
+  </data>
+  <data name="specific_error_en" xml:space="preserve">
+    <value>Exact error :-</value>
+  </data>
   <data name="success_ar" xml:space="preserve">
     <value>ناجح.</value>
   </data>
@@ -327,6 +327,18 @@
   <data name="test_en_success" xml:space="preserve">
     <value>The connection to the database was successful</value>
   </data>
+  <data name="Text_ar" xml:space="preserve">
+    <value>النص</value>
+  </data>
+  <data name="Text_en" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="Type_ar" xml:space="preserve">
+    <value>النوع</value>
+  </data>
+  <data name="Type_en" xml:space="preserve">
+    <value>Type</value>
+  </data>
   <data name="update_ar" xml:space="preserve">
     <value>تحديث</value>
   </data>
@@ -344,5 +356,17 @@
   </data>
   <data name="update_en_success" xml:space="preserve">
     <value>The question was updated successfully</value>
+  </data>
+  <data name="update_text_ar" xml:space="preserve">
+    <value>تحديث</value>
+  </data>
+  <data name="update_text_en" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="update_title_ar" xml:space="preserve">
+    <value>تحديث سؤال</value>
+  </data>
+  <data name="update_title_en" xml:space="preserve">
+    <value>Update Question</value>
   </data>
 </root>

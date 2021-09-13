@@ -6,7 +6,6 @@ using System.Collections;
 using QuestionDatabase;
 using QuestionEntities;
 using QuestionsController;
-using QuestionsApp;
 using System.Globalization;
 using System.Threading;
 using System.Configuration;
@@ -17,21 +16,32 @@ namespace QuestionsApp
     {
         private Control ConnectionValuesContainer;
         private ConnectionString ConnectionString;
-        private Controller QuestiosnControllerObject;
+        private QuestionsHandler QuestionsHandlerObject;
         private string CurrentLanguage;
-        private readonly string InputControlsWrapperName = "connectionContainer";
-        private readonly string UsernameInput = "input_Username";
-        private readonly string PasswordInput = "input_Password";
-        private readonly string IntegratedSecurityString = "IntegratedSecurity";
-        public SettingsForm(Controller pQuestionsController)
+        private enum LanguagesEnum
+        {
+            Arabic,
+            English,
+        }
+        private const string InputControlsWrapperName = "connectionContainer";
+        private const string Username = "Username";
+        private const string Password = "Password";
+        private const string IntegratedSecurityString = "IntegratedSecurity";
+        private const string LanguageString = "Language";
+        private const string InputLabelString = "input";
+        private const string SettingsSaveKey = "settings_save";
+        private const string TestKey = "test";
+        private const string TextKey = "text";
+        private const string SSPIString = "SSPI";
+        public SettingsForm(QuestionsHandler pQuestionsHandlerObject)
         {
             try
             {
-                CurrentLanguage = ConfigurationManager.AppSettings["Language"];
+                CurrentLanguage = ConfigurationManager.AppSettings[LanguageString];
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(CurrentLanguage);
                 InitializeComponent();
-                QuestiosnControllerObject = pQuestionsController;
-                ConnectionString = new ConnectionString(QuestiosnControllerObject.GetConnectionString());
+                QuestionsHandlerObject = pQuestionsHandlerObject;
+                ConnectionString = new ConnectionString(QuestionsHandlerObject.GetConnectionString());
             }
             catch (Exception tException)
             {
@@ -44,6 +54,11 @@ namespace QuestionsApp
             try
             {
                 ConnectionValuesContainer = Controls[InputControlsWrapperName];
+
+                languageComboBox.SelectedValueChanged -= new EventHandler(languageComboBox_SelectedValueChanged);
+                languageComboBox.DataSource = Enum.GetValues(typeof(LanguagesEnum));
+                languageComboBox.SelectedValueChanged += new EventHandler(languageComboBox_SelectedValueChanged);
+
                 UpdateSettingFields();
             }
             catch (Exception tException)
@@ -59,6 +74,22 @@ namespace QuestionsApp
         {
             try
             {
+                UpdateConnectionStringFields();
+                UpdateLanguageField();
+            }
+            catch (Exception tException)
+            {
+                Logger.WriteExceptionMessage(tException);
+            }
+        }
+
+        /// <summary>
+        /// Updates the connection settings field with the data from the connection string object
+        /// </summary>
+        private void UpdateConnectionStringFields()
+        {
+            try
+            {
                 // Gets the proporty names of the ConnectionString Class
                 Type tConnectionStringType = typeof(ConnectionString);
                 PropertyInfo[] tConnectionStringProporties = tConnectionStringType.GetProperties();
@@ -69,7 +100,7 @@ namespace QuestionsApp
                     string tConnectionStringProportyName = tConnectionStringProporty.Name;
 
                     // Get the input control that contains this specific value
-                    Control tCurrentConnectionStringField = ConnectionValuesContainer.Controls["input_" + tConnectionStringProportyName];
+                    Control tCurrentConnectionStringField = ConnectionValuesContainer.Controls[InputLabelString + "_" + tConnectionStringProportyName];
                     // Get the value in the ConnectionString instance
                     string tCurrentConnectionStringValue = tConnectionStringProporty.GetValue(ConnectionString, null).ToString();
                     // Assign the input field value with the value from the ConnectionString instance
@@ -89,6 +120,29 @@ namespace QuestionsApp
         }
 
         /// <summary>
+        /// Updates the language combobox with the currently selected language
+        /// </summary>
+        private void UpdateLanguageField()
+        {
+            try
+            {
+                languageComboBox.SelectedValueChanged -= new EventHandler(languageComboBox_SelectedValueChanged);
+                foreach (string tLanguageText in Enum.GetNames(typeof(LanguagesEnum)))
+                {
+                    if (tLanguageText.ToLower().StartsWith(CurrentLanguage))
+                    {
+                        languageComboBox.Text = tLanguageText;
+                    }
+                }
+                languageComboBox.SelectedValueChanged += new EventHandler(languageComboBox_SelectedValueChanged);
+            }
+            catch (Exception tException)
+            {
+                Logger.WriteExceptionMessage(tException);
+            }
+        }
+
+        /// <summary>
         /// Toggles the username and password buttons on and off based on the value of the Security type
         /// </summary>
         private void CheckIntegratedSecurityValue()
@@ -96,7 +150,7 @@ namespace QuestionsApp
             try
             {
                 // SSPI is windows authentication, so we don't need a username/password from the user
-                if (ConnectionValuesContainer.Controls["input_IntegratedSecurity"].Text.Equals("SSPI"))
+                if (ConnectionValuesContainer.Controls[InputLabelString + "_" + IntegratedSecurityString].Text.Equals(SSPIString))
                 {
                     ToggleUsernamePasswordFields(false);
                 }
@@ -119,8 +173,8 @@ namespace QuestionsApp
         {
             try
             {
-                ConnectionValuesContainer.Controls[UsernameInput].Enabled = pValue;
-                ConnectionValuesContainer.Controls[PasswordInput].Enabled = pValue;
+                ConnectionValuesContainer.Controls[InputLabelString + "_" + Username].Enabled = pValue;
+                ConnectionValuesContainer.Controls[InputLabelString + "_" + Password].Enabled = pValue;
             }
             catch (Exception tException)
             {
@@ -148,7 +202,7 @@ namespace QuestionsApp
                     string tConnectionStringProportyName = tConnectionStringProporty.Name;
 
                     // Get the input control that contains this specific value
-                    Control tCurrentConnectionStringField = ConnectionValuesContainer.Controls["input_" + tConnectionStringProportyName];
+                    Control tCurrentConnectionStringField = ConnectionValuesContainer.Controls[InputLabelString + "_" + tConnectionStringProportyName];
                     // Assign the ConnectionString instance proporty with the value from the coropsonding input field
                     tConnectionStringProporty.SetValue(ConnectionString, tCurrentConnectionStringField.Text.ToString(), null);
                 }
@@ -179,7 +233,7 @@ namespace QuestionsApp
                 // this means that there are empty fields
                 if (tControlNames.Count != 0)
                 {
-                    MessagesUtility.ShowMessageForm("settings_save", (int) ResultCodesEnum.EMPTY_FIELDS);
+                    MessagesUtility.ShowMessageForm(SettingsSaveKey, (int) ResultCodesEnum.EMPTY_FIELDS);
                 }
             }
             catch (Exception tException)
@@ -208,9 +262,9 @@ namespace QuestionsApp
                 // Fill the ConnectionString instance data from the input fields
                 FillConnectionStringFields();
                 // Test the new ConnectionString instance
-                int tResultCode = QuestiosnControllerObject.TestConnection(ConnectionString);
+                int tResultCode = QuestionsHandlerObject.TestConnection(ConnectionString);
 
-                MessagesUtility.ShowMessageForm("test", tResultCode);
+                MessagesUtility.ShowMessageForm(TestKey, tResultCode);
             }
             catch (Exception tException)
             {
@@ -236,11 +290,11 @@ namespace QuestionsApp
                 // Fill the ConnectionString instance data from the input fields
                 FillConnectionStringFields();
                 // Save the ConnectionString instance in the database
-                int tResultCode = QuestiosnControllerObject.ChangeConnectionString(ConnectionString);
+                int tResultCode = QuestionsHandlerObject.ChangeConnectionString(ConnectionString);
 
                 if (ResultCodesEnum.SUCCESS == (ResultCodesEnum) tResultCode)
                 {
-                    MessagesUtility.ShowMessageForm("settings_save", tResultCode);
+                    MessagesUtility.ShowMessageForm(SettingsSaveKey, tResultCode);
                     Close();
                 }
             }
@@ -307,11 +361,14 @@ namespace QuestionsApp
         {
             try
             {
-                MessagesUtility.ShowMessageForm("language", (int) ResultCodesEnum.SUCCESS, MessageBoxButtons.OK, "text");
+                MessagesUtility.ShowMessageForm(LanguageString.ToLower(), (int) ResultCodesEnum.SUCCESS, MessageBoxButtons.OK, TextKey);
 
                 var tConfigurationManager = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                tConfigurationManager.AppSettings.Settings["Language"].Value = CurrentLanguage;
+                tConfigurationManager.AppSettings.Settings[LanguageString].Value = CurrentLanguage;
                 tConfigurationManager.Save(ConfigurationSaveMode.Modified);
+
+                Application.Restart();
+                Environment.Exit(0);
             }
             catch (Exception tException)
             {

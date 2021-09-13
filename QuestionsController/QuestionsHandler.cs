@@ -8,17 +8,28 @@ using QuestionEntities;
 
 namespace QuestionsController
 {
-    public class Controller
+    public class QuestionsHandler
     {
         private DatabaseController DatabaseController;
         public BindingList<Question> QuestionsList { get; private set; }
+        private ListSortDirection CurrentSortDirection;
+        private int CurrentSortValueEnum; 
+        private enum SortableValueNames
+        {
+            Type,
+            Order,
+            Id,
+            Text
+        };
 
-        public Controller()
+        public QuestionsHandler()
         {
             try
             {
                 QuestionsList = new BindingList<Question>();
                 DatabaseController = new DatabaseController();
+                CurrentSortDirection = ListSortDirection.Ascending;
+                CurrentSortValueEnum = (int) SortableValueNames.Id;
             }
             catch (Exception tException)
             {
@@ -37,8 +48,17 @@ namespace QuestionsController
             try
             {
                 // Create a new instance of the bindinglist so that data Isn't duplicated 
-                QuestionsList.Clear();
-                tResultCode = DatabaseController.GetData(QuestionsList);
+                BindingList<Question> tQuestionsList = new BindingList<Question>();
+                tResultCode = DatabaseController.GetData(tQuestionsList);
+
+                if (tResultCode == (int) ResultCodesEnum.SUCCESS)
+                {
+                    QuestionsList.Clear();
+                    foreach(Question tQuestion in tQuestionsList)
+                    {
+                        QuestionsList.Add(tQuestion);
+                    }
+                }
             }
             catch (Exception tException)
             {
@@ -60,8 +80,22 @@ namespace QuestionsController
             try
             {
                 // Sort the array by the Id so that the update operating works correctly
-                SortQuestions("Id", ListSortDirection.Ascending);
-                tResultCode = DatabaseController.UpdateData(QuestionsList);
+                SortQuestions(SortableValueNames.Id.ToString(), ListSortDirection.Ascending, false);
+                BindingList<Question> tQuestionsList = new BindingList<Question>(QuestionsList.ToList());
+
+                tResultCode = DatabaseController.UpdateData(tQuestionsList);
+
+                if (tResultCode == (int) ResultCodesEnum.SUCCESS)
+                {
+                    QuestionsList.Clear();
+                    foreach (Question tQuestion in tQuestionsList)
+                    {
+                        QuestionsList.Add(tQuestion);
+                    }
+                }
+
+                // Resort the list using the already selected sort types after refreshing the data
+                SortQuestions(Enum.GetName(typeof(SortableValueNames), CurrentSortValueEnum) , CurrentSortDirection, false);
             }
             catch (Exception tException)
             {
@@ -255,7 +289,7 @@ namespace QuestionsController
         /// <param name="pValueName">The name value to sort by</param>
         /// <param name="pDirection">The sort direction, ASC, DECS</param>
         /// <returns>A response code represnting what happend</returns>
-        public int SortQuestions(string pValueName, ListSortDirection pDirection)
+        public int SortQuestions(string pValueName, ListSortDirection pDirection, bool pIsUserAction = true)
         {
             int tResultCode = (int) ResultCodesEnum.SUCCESS;
 
@@ -263,22 +297,33 @@ namespace QuestionsController
             {
                 // Create a new temporary List
                 List<Question> tQuestionsList = new List<Question>();
+                Enum.TryParse(pValueName, out SortableValueNames tSortableValueEnum);
 
                 // Based on the valueName sent in the params, pick which proportie to sort by
-                switch (pValueName)
+                switch (tSortableValueEnum)
                 {
-                    case "Type":
+                    case SortableValueNames.Type:
                         tQuestionsList = (pDirection == ListSortDirection.Descending) ? 
                             QuestionsList.OrderByDescending(tQuestion => tQuestion.Type).ToList() : QuestionsList.OrderBy(tQuestion => tQuestion.Type).ToList();
                         break;
-                    case "Order":
+                    case SortableValueNames.Order:
                         tQuestionsList = (pDirection == ListSortDirection.Descending) ?
                             QuestionsList.OrderByDescending(tQuestion => tQuestion.Order).ToList() : QuestionsList.OrderBy(tQuestion => tQuestion.Order).ToList();
+                        break;
+                    case SortableValueNames.Text:
+                        tQuestionsList = (pDirection == ListSortDirection.Descending) ?
+                            QuestionsList.OrderByDescending(tQuestion => tQuestion.Text).ToList() : QuestionsList.OrderBy(tQuestion => tQuestion.Text).ToList();
                         break;
                     default:
                         tQuestionsList = (pDirection == ListSortDirection.Descending) ?
                             QuestionsList.OrderByDescending(tQuestion => tQuestion.Id).ToList() : QuestionsList.OrderBy(tQuestion => tQuestion.Id).ToList();
                         break;
+                }
+
+                if (pIsUserAction)
+                {
+                    CurrentSortDirection = pDirection;
+                    CurrentSortValueEnum = (int)tSortableValueEnum;
                 }
 
                 // Recreate the QuestionsList instance with a new one containing the sorted items

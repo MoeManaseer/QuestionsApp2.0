@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 using System.Collections;
 using LoggerUtils;
@@ -15,26 +14,37 @@ namespace QuestionsApp
 {
     public partial class QuestionForm : Form
     {
-        private Controller QuestionsController;
+        private QuestionsHandler QuestionsHandlerObject;
         private Question CurrentQuestion;
         private int QuestionIndex;
         private bool IsNewQuestion;
         private List<Control> QuestionsInputFieldList;
         private Dictionary<string, string> QuestionTypesDictionary;
-        private readonly string CurrentLanguage = ConfigurationManager.AppSettings["Language"];
-        private readonly string QuestionInputWrapper = "containerQuestion";
+        private const string LanguageString = "Language";
+        private readonly string CurrentLanguage = ConfigurationManager.AppSettings[LanguageString];
+        private const string QuestionInputWrapper = "containerQuestion";
+        private const string AddKey = "add";
+        private const string UpdateKey = "update";
+        private const string TitleKey = "title";
+        private const string TextKey = "text";
+        private const string FormLoadingKey = "form_loading";
+        private const string ContainerString = "container";
+        private const string InputString = "input";
+        private const string KeyString = "Key";
+        private const string ValueString = "Value";
+
         private enum QuestionTypes
         {
             Smiley, Star, Slider,
         };
 
-        public QuestionForm(Controller pQuestionsController)
+        public QuestionForm(QuestionsHandler pQuestionsHandlerObject)
         {
             try
             {
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(CurrentLanguage);
                 InitializeComponent();
-                QuestionsController = pQuestionsController;
+                QuestionsHandlerObject = pQuestionsHandlerObject;
                 QuestionIndex = -1;
                 CurrentQuestion = QuestionsFactory.GetInstance(QuestionTypes.Smiley.ToString());
                 CurrentQuestion.Type = QuestionTypes.Smiley.ToString();
@@ -47,17 +57,17 @@ namespace QuestionsApp
             }
         }
 
-        public QuestionForm(Controller pQuestionsController, int pQuestionIndex)
+        public QuestionForm(QuestionsHandler pQuestionsHandlerObject, int pQuestionIndex)
         {
             try
             {
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(CurrentLanguage);
                 InitializeComponent();
-                QuestionsController = pQuestionsController;
+                QuestionsHandlerObject = pQuestionsHandlerObject;
                 QuestionIndex = pQuestionIndex;
-                string tCurrentQuestionType = QuestionsController.QuestionsList[QuestionIndex].Type;
+                string tCurrentQuestionType = QuestionsHandlerObject.QuestionsList[QuestionIndex].Type;
                 CurrentQuestion = QuestionsFactory.GetInstance(tCurrentQuestionType);
-                CurrentQuestion.Id = QuestionsController.QuestionsList[QuestionIndex].Id;
+                CurrentQuestion.Id = QuestionsHandlerObject.QuestionsList[QuestionIndex].Id;
                 CurrentQuestion.Type = tCurrentQuestionType;
                 QuestionTypesDictionary = new Dictionary<string, string>();
                 IsNewQuestion = false;
@@ -80,16 +90,16 @@ namespace QuestionsApp
 
                 if (IsNewQuestion)
                 {
-                    Text = MessagesUtility.GetResourceValue("add_title_" + CurrentLanguage);
-                    controlBtn.Text = MessagesUtility.GetResourceValue("add_text_" + CurrentLanguage);
+                    Text = MessagesUtility.GetResourceValue(AddKey + "_" + TitleKey + "_" + CurrentLanguage);
+                    controlBtn.Text = MessagesUtility.GetResourceValue(AddKey + "_" + TextKey + "_" + CurrentLanguage);
                     ShowExtraQuestionFields();
                 }
                 else
                 {
-                    Text = MessagesUtility.GetResourceValue("edit_title_" + CurrentLanguage);
+                    Text = MessagesUtility.GetResourceValue(UpdateKey + "_" + TitleKey + "_" + CurrentLanguage);
                     questionTypeCombo.Enabled = false;
-                    controlBtn.Text = MessagesUtility.GetResourceValue("edit_text_" + CurrentLanguage);
-                    tResultCode = QuestionsController.GetQuestion(CurrentQuestion);
+                    controlBtn.Text = MessagesUtility.GetResourceValue(UpdateKey + "_" + TextKey + "_" + CurrentLanguage);
+                    tResultCode = QuestionsHandlerObject.GetQuestion(CurrentQuestion);
                     UpdateQuestionFields();
                 }
 
@@ -97,7 +107,7 @@ namespace QuestionsApp
 
                 if (tResultCode != (int) ResultCodesEnum.SUCCESS)
                 {
-                    MessagesUtility.ShowMessageForm("form_loading", tResultCode);
+                    MessagesUtility.ShowMessageForm(FormLoadingKey, tResultCode);
                 }
             }
             catch (Exception tException)
@@ -141,12 +151,12 @@ namespace QuestionsApp
                 Control tQuestionDataContainer = Controls[QuestionInputWrapper];
 
                 // Get the extra container of the input fields
-                Control tQuestionExtraDataContainer = tQuestionDataContainer.Controls["container" + tCurrentQuestionType];
+                Control tQuestionExtraDataContainer = tQuestionDataContainer.Controls[ContainerString + tCurrentQuestionType];
 
                 // loops over the question container and adds the input controls to an array
                 foreach (Control tQuestionInputField in tQuestionDataContainer.Controls)
                 {
-                    if (tQuestionInputField.Name.Contains("input"))
+                    if (tQuestionInputField.Name.Contains(InputString))
                     {
                         QuestionsInputFieldList.Add(tQuestionInputField);
                     }
@@ -155,7 +165,7 @@ namespace QuestionsApp
                 // loops over the extra question data container and adds the input controls to an array
                 foreach (Control tQuestionExtraInputField in tQuestionExtraDataContainer.Controls)
                 {
-                    if (tQuestionExtraInputField.Name.Contains("input"))
+                    if (tQuestionExtraInputField.Name.Contains(InputString))
                     {
                         QuestionsInputFieldList.Add(tQuestionExtraInputField);
                     }
@@ -177,8 +187,8 @@ namespace QuestionsApp
                 // Before adding the BindingSource, remove the ValueChanged event listener, since it fires when adding new items
                 questionTypeCombo.SelectedValueChanged -= new EventHandler(questionTypeCombo_SelectedValueChanged);
                 questionTypeCombo.DataSource = new BindingSource(QuestionTypesDictionary, null);
-                questionTypeCombo.DisplayMember = "Value";
-                questionTypeCombo.ValueMember = "Key";
+                questionTypeCombo.DisplayMember = ValueString;
+                questionTypeCombo.ValueMember = KeyString;
                 // Reassign the ValueChanged event listener
                 questionTypeCombo.SelectedValueChanged += new EventHandler(questionTypeCombo_SelectedValueChanged);
             }
@@ -226,12 +236,12 @@ namespace QuestionsApp
                 // Hides all the extra question data containers
                 foreach (var tQuestionExtraDataContainer in QuestionTypesDictionary)
                 {
-                    QuestionDataContainer.Controls["container" + tQuestionExtraDataContainer.Key].Visible = false;
+                    QuestionDataContainer.Controls[ContainerString + tQuestionExtraDataContainer.Key].Visible = false;
                 }
 
                 string tCurrentQuestionType = CurrentQuestion.Type;
                 // Shows the currently selected question type data container
-                QuestionDataContainer.Controls["container" + tCurrentQuestionType].Visible = true;
+                QuestionDataContainer.Controls[ContainerString + tCurrentQuestionType].Visible = true;
             }
             catch (Exception tException)
             {
@@ -259,7 +269,7 @@ namespace QuestionsApp
                 // if there was an empty field
                 if (tControlNames.Count != 0)
                 {
-                    string tOperationName = IsNewQuestion ? "add" : "update";
+                    string tOperationName = IsNewQuestion ? AddKey : UpdateKey;
                     MessagesUtility.ShowMessageForm(tOperationName, (int) ResultCodesEnum.EMPTY_FIELDS);
                 }
             }
@@ -297,45 +307,6 @@ namespace QuestionsApp
         }
 
         /// <summary>
-        /// Compares the current question row data with the input fields, to see if the question should be updated or they are the same
-        /// </summary>
-        /// <returns>If the question datarow has the same values in the input fields or not</returns>
-        private bool CheckQuestionFields()
-        {
-            bool tIsUpdatable = false;
-
-            try
-            {
-                // Get the key/value paris from the current question instance
-                Dictionary<string, string> tQuestionDataDic = CurrentQuestion.GetDataList();
-
-                // loops over the input fields and compares them to the data from the question dictionary
-                foreach (Control tQuestionInputField in QuestionsInputFieldList)
-                {
-                    string tCurrentFieldName = tQuestionInputField.Name.Split('_')[1];
-
-                    // Comapres the data in the current field with the corosponding field in the QuestionRow data
-                    if (!tQuestionInputField.Text.Equals(tQuestionDataDic[tCurrentFieldName]))
-                    {
-                        tIsUpdatable = true;
-                        break;
-                    }
-                }
-
-                if (!tIsUpdatable)
-                {
-                    MessagesUtility.ShowMessageForm("update", (int) ResultCodesEnum.NOTHING_TO_UPDATE);
-                }
-            }
-            catch (Exception tException)
-            {
-                Logger.WriteExceptionMessage(tException);
-            }
-
-            return tIsUpdatable;
-        }
-
-        /// <summary>
         /// Fires whenever the Add/Update button gets clicked, then calls the corresponding function to Add/Update the question
         /// </summary>
         /// <param name="sender">The control that fired the event</param>
@@ -345,15 +316,15 @@ namespace QuestionsApp
             try
             {
                 // ValidateFields checks if there is no empty input fields, while checkQuestionFields checks if the data is different from the original or not
-                if (ValidateFields() && (IsNewQuestion || CheckQuestionFields()))
+                if (ValidateFields())
                 {
                     // Fill the current question instance with data
                     FillQuestionRow();
 
                     // Call the corosponding QuestionsController function
-                    int tResultCode = IsNewQuestion ? QuestionsController.AddQuestion(CurrentQuestion) : QuestionsController.EditQuestion(CurrentQuestion);
+                    int tResultCode = IsNewQuestion ? QuestionsHandlerObject.AddQuestion(CurrentQuestion) : QuestionsHandlerObject.EditQuestion(CurrentQuestion);
 
-                    string tOperationName = IsNewQuestion ? "add" : "update";
+                    string tOperationName = IsNewQuestion ? AddKey : UpdateKey;
                     MessagesUtility.ShowMessageForm(tOperationName, tResultCode);
 
                     // If action success close the form
