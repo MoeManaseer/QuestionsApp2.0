@@ -6,9 +6,9 @@ namespace QuestionEntities
 {
     public class SmileyQuestion : Question
     {
-        private int _NumberOfSmiley;
+        private byte _NumberOfSmiley;
 
-        public int NumberOfSmiley
+        public byte NumberOfSmiley
         {
             get { return _NumberOfSmiley; }
             set
@@ -23,7 +23,7 @@ namespace QuestionEntities
         }
 
         public SmileyQuestion
-            (int pId, int pOrder, string pText, int pNumberOfSmiley)
+            (int pId, byte pOrder, string pText, byte pNumberOfSmiley)
             : base(pId, pOrder, pText, "Smiley")
         {
             try
@@ -73,7 +73,7 @@ namespace QuestionEntities
 
             try
             {
-                NumberOfSmiley = Convert.ToInt32(pDataDictionary["NumberOfSmiley"]);
+                NumberOfSmiley = Convert.ToByte(pDataDictionary["NumberOfSmiley"]);
             }
             catch (Exception tException)
             {

@@ -1,0 +1,53 @@
+09/14 11:21:47 :-
+NumberOfStar validation error, please make sure the value is lower than or equal 10 and bigger than 0
+   at QuestionEntities.StarQuestion.set_NumberOfStar(Int32 value)
+   at QuestionEntities.StarQuestion..ctor(Int32 pId, Int32 pOrder, String pText, Int32 pNumberOfStar)
+
+09/14 11:26:48 :-
+The SELECT permission was denied on the object 'AllQuestions', database 'TempQuestionsDatabase', schema 'dbo'.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader()
+   at QuestionDatabase.DatabaseController.GetData(BindingList`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 169
+
+09/14 15:45:27 :-
+Cross-thread operation not valid: Control 'allQuestionsGrid' accessed from a thread other than the thread it was created on.
+   at System.Windows.Forms.Control.get_Handle()
+   at System.Windows.Forms.DataGridView.FlushDisplayedChanged()
+   at System.Windows.Forms.DataGridView.PerformLayoutPrivate(Boolean useRowShortcut, Boolean computeVisibleRows, Boolean invalidInAdjustFillingColumns, Boolean repositionEditingControl)
+   at System.Windows.Forms.DataGridView.ResetUIState(Boolean useRowShortcut, Boolean computeVisibleRows)
+   at System.Windows.Forms.DataGridViewRowCollection.OnCollectionChanged_PreNotification(CollectionChangeAction cca, Int32 rowIndex, Int32 rowCount, DataGridViewRow& dataGridViewRow, Boolean changeIsInsertion)
+   at System.Windows.Forms.DataGridViewRowCollection.OnCollectionChanged(CollectionChangeEventArgs e, Int32 rowIndex, Int32 rowCount, Boolean changeIsDeletion, Boolean changeIsInsertion, Boolean recreateNewRow, Point newCurrentCell)
+   at System.Windows.Forms.DataGridViewRowCollection.ClearInternal(Boolean recreateNewRow)
+   at System.Windows.Forms.DataGridView.RefreshColumnsAndRows()
+   at System.Windows.Forms.DataGridView.OnDataSourceChanged(EventArgs e)
+   at System.Windows.Forms.DataGridView.set_DataSource(Object value)
+   at QuestionsApp.LandingForm.UpdateFormControls() in D:\source\repos\QuestionsApp\QuestionsApp\LandingForm.cs:line 118
+
+09/14 15:46:58 :-
+Cross-thread operation not valid: Control 'allQuestionsGrid' accessed from a thread other than the thread it was created on.
+   at System.Windows.Forms.Control.get_Handle()
+   at System.Windows.Forms.Control.BeginUpdateInternal()
+   at System.Windows.Forms.DataGridView.RefreshColumns()
+   at System.Windows.Forms.DataGridView.RefreshColumnsAndRows()
+   at System.Windows.Forms.DataGridView.OnDataSourceChanged(EventArgs e)
+   at System.Windows.Forms.DataGridView.set_DataSource(Object value)
+   at QuestionsApp.LandingForm.UpdateFormControls() in D:\source\repos\QuestionsApp\QuestionsApp\LandingForm.cs:line 118
+
+09/14 17:17:54 :-
+Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at System.Collections.ObjectModel.Collection`1.get_Item(Int32 index)
+   at QuestionDatabase.DatabaseController.UpdateData(BindingList`1 pQuestionsList) in D:\source\repos\QuestionsApp\QuestionDatabase\DatabaseController.cs:line 263
+

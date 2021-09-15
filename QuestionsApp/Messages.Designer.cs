@@ -601,6 +601,42 @@ namespace QuestionsApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to منزلق.
+        /// </summary>
+        internal static string Slider_ar {
+            get {
+                return ResourceManager.GetString("Slider_ar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slider.
+        /// </summary>
+        internal static string Slider_en {
+            get {
+                return ResourceManager.GetString("Slider_en", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مبتسم.
+        /// </summary>
+        internal static string Smiley_ar {
+            get {
+                return ResourceManager.GetString("Smiley_ar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smiley.
+        /// </summary>
+        internal static string Smiley_en {
+            get {
+                return ResourceManager.GetString("Smiley_en", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to خطأ دقيق: -.
         /// </summary>
         internal static string specific_error_ar {
@@ -615,6 +651,24 @@ namespace QuestionsApp {
         internal static string specific_error_en {
             get {
                 return ResourceManager.GetString("specific_error_en", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نجمة.
+        /// </summary>
+        internal static string Star_ar {
+            get {
+                return ResourceManager.GetString("Star_ar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Star.
+        /// </summary>
+        internal static string Star_en {
+            get {
+                return ResourceManager.GetString("Star_en", resourceCulture);
             }
         }
         

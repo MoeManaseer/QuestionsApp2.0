@@ -345,6 +345,7 @@ namespace QuestionsApp
             {
                 string tNewSelectedLanguage = languageComboBox.Text.Substring(0, 2).ToLower();
 
+                // Only change the language when it actually changes
                 if (!tNewSelectedLanguage.Equals(CurrentLanguage))
                 {
                     CurrentLanguage = tNewSelectedLanguage;
@@ -357,6 +358,9 @@ namespace QuestionsApp
             }
         }
 
+        /// <summary>
+        /// Utility function that changes the current language in the App.config file then restarts the applciation
+        /// </summary>
         private void ChangeCurrentLanguage()
         {
             try

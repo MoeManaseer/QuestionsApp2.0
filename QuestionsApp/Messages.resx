@@ -369,4 +369,22 @@
   <data name="update_title_en" xml:space="preserve">
     <value>Update Question</value>
   </data>
+  <data name="Slider_ar" xml:space="preserve">
+    <value>منزلق</value>
+  </data>
+  <data name="Slider_en" xml:space="preserve">
+    <value>Slider</value>
+  </data>
+  <data name="Smiley_ar" xml:space="preserve">
+    <value>مبتسم</value>
+  </data>
+  <data name="Smiley_en" xml:space="preserve">
+    <value>Smiley</value>
+  </data>
+  <data name="Star_ar" xml:space="preserve">
+    <value>نجمة</value>
+  </data>
+  <data name="Star_en" xml:space="preserve">
+    <value>Star</value>
+  </data>
 </root>

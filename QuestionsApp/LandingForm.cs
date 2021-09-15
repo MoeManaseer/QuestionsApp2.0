@@ -13,7 +13,6 @@ namespace QuestionsApp
     public partial class LandingForm : Form
     {
         private QuestionsHandler QuestionsHandlerObject;
-        private System.Windows.Forms.Timer UpdateTimer;
         private string CurrentLanguage;
         private const string LanguageString = "Language";
         private const string FormLoadingKey = "form_loading";
@@ -34,6 +33,7 @@ namespace QuestionsApp
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(CurrentLanguage);
                 InitializeComponent();
                 QuestionsHandlerObject = new QuestionsHandler();
+                QuestionsHandlerObject.UpdateData += LandingForm_UpdateData;
             }
             catch (Exception tException)
             {
@@ -45,7 +45,6 @@ namespace QuestionsApp
         {
             try
             {
-                InitTimer();
                 LoadUpdateForm(false);
             }
             catch (Exception tException)
@@ -55,33 +54,15 @@ namespace QuestionsApp
         }
 
         /// <summary>
-        /// Initializes the UpdateTimer
-        /// </summary>
-        private void InitTimer()
-        {
-            try
-            {
-                UpdateTimer = new System.Windows.Forms.Timer();
-                UpdateTimer.Tick += new EventHandler(UpdateTimer_Tick);
-                // 20 secs
-                UpdateTimer.Interval = 20000;
-            }
-            catch (Exception tException)
-            {
-                Logger.WriteExceptionMessage(tException);
-            }
-        }
-
-        /// <summary>
-        /// Event listener for the UpdateTimer object
+        /// Event listener that fires whenever the questionsController updates it's data
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UpdateTimer_Tick(object sender, EventArgs e)
+        private void LandingForm_UpdateData(object sender, EventArgs e)
         {
             try
             {
-                LoadUpdateForm(true);
+                UpdateFormControlsMethod();
             }
             catch (Exception tException)
             {
@@ -103,19 +84,40 @@ namespace QuestionsApp
 
                 if (tResultCode == (int) ResultCodesEnum.SUCCESS)
                 {
+                    UpdateFormControlsMethod();
+                }
+                else if (tResultCode != (int)ResultCodesEnum.UP_TO_DATE)
+                {
+                    MessagesUtility.ShowMessageForm(FormLoadingKey, tResultCode);
+                    ToggleFormControls(false);
+                }
+            }
+            catch (Exception tException)
+            {
+                Logger.WriteExceptionMessage(tException);
+            }
+        }
+
+        private void UpdateFormControlsMethod()
+        {
+            try
+            {
+                if (InvokeRequired)
+                {
+                    MethodInvoker tMethodInvokerDelegate = delegate () { UpdateFormControlsMethod(); };
+                    Invoke(tMethodInvokerDelegate);
+                }
+                else
+                {
+                    allQuestionsGrid.DataSource = null;
                     // Assign the datasource
                     allQuestionsGrid.DataSource = QuestionsHandlerObject.QuestionsList;
                     // Enable the form controls
                     ToggleFormControls(true);
-                    // Check the list for being empty or not
-                    CheckList();
+                    // disable the buttons if the list is empty
+                    ToggleButtons(allQuestionsGrid.RowCount != 0);
                     // Updates the columns of the DataGridView
                     UpdateQuestionsListTable();
-                }
-                else
-                {
-                    MessagesUtility.ShowMessageForm(FormLoadingKey, tResultCode);
-                    ToggleFormControls(false);
                 }
             }
             catch (Exception tException)
@@ -182,22 +184,6 @@ namespace QuestionsApp
         }
 
         /// <summary>
-        /// Helper function that checks whether the questiosn data grid is empty or not, if it is disable the edit/delete buttons
-        /// </summary>
-        private void CheckList()
-        {
-            try
-            {
-                // If there are no items in the DataGridView, disable the Edit/Delete buttons
-                ToggleButtons(allQuestionsGrid.RowCount != 0);
-            }
-            catch (Exception tException)
-            {
-                Logger.WriteExceptionMessage(tException);
-            }
-        }
-
-        /// <summary>
         /// Helper function that disables/enabels the edit/add buttons
         /// </summary>
         /// <param name="pValue">bool value to enable/disable the form add/edit buttons</param>
@@ -240,11 +226,11 @@ namespace QuestionsApp
         {
             try
             {
-                UpdateTimer.Stop();
                 // Show the QuestionForm and give it the current instance of the QuestionsController
                 QuestionForm tQuestionForm = new QuestionForm(QuestionsHandlerObject);
                 tQuestionForm.ShowDialog();
-                UpdateTimer.Start();
+
+                UpdateFormControlsMethod();
             }
             catch (Exception tException)
             {
@@ -263,11 +249,11 @@ namespace QuestionsApp
             {
                 // Get the current selectedRow index
                 int tCurrentIndex = allQuestionsGrid.SelectedRows[0].Index;
-                UpdateTimer.Stop();
                 // Open the questionsForm and pass it the current selected question index
                 QuestionForm tQuestionForm = new QuestionForm(QuestionsHandlerObject, tCurrentIndex);
                 tQuestionForm.ShowDialog();
-                UpdateTimer.Start();
+
+                UpdateFormControlsMethod();
             }
             catch (Exception tException)
             {
@@ -290,14 +276,18 @@ namespace QuestionsApp
                 if (tResult == DialogResult.Yes)
                 {
                     // Get the current selected question index
-                    int tCurrentSelectedIndex = allQuestionsGrid.CurrentRow.Index;
+                    int tCurrentSelectedIndex = allQuestionsGrid.CurrentRow != null ? allQuestionsGrid.CurrentRow.Index : 0;
                     // Get the current question to be removed
                     Question tSelectedQuestion = QuestionsHandlerObject.QuestionsList[tCurrentSelectedIndex];
                     // Call the questionsController remove function and get a response
                     int tResultCode = QuestionsHandlerObject.RemoveQuestion(tSelectedQuestion);
 
                     MessagesUtility.ShowMessageForm(RemoveKey, tResultCode);
-                    CheckList();
+                    
+                    if (tResultCode == (int) ResultCodesEnum.SUCCESS)
+                    {
+                        UpdateFormControlsMethod();
+                    }
                 }
             }
             catch (Exception tException)
@@ -332,7 +322,6 @@ namespace QuestionsApp
         {
             try
             {
-                UpdateTimer.Stop();
                 SettingsForm tSettingsForm = new SettingsForm(QuestionsHandlerObject);
                 tSettingsForm.ShowDialog();
                 LoadUpdateForm(false);
@@ -368,11 +357,8 @@ namespace QuestionsApp
 
                 // Sort the items in the QuestionsList
                 QuestionsHandlerObject.SortQuestions(tTempCurrentClickedCloumn.Name, direction);
-                // Reset the DataSource with the new sorted QuestionsList
-                allQuestionsGrid.DataSource = QuestionsHandlerObject.QuestionsList;
 
-                // Reupdate the column headers and reformat the table
-                UpdateQuestionsListTable();
+                UpdateFormControlsMethod();
 
                 // Reselect the new column that was generated after the new DataSource binding
                 DataGridViewColumn tCurrentClickedCloumn = allQuestionsGrid.Columns[e.ColumnIndex];

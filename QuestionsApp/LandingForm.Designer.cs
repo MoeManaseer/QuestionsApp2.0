@@ -40,6 +40,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.settingsPanel = new System.Windows.Forms.Panel();
             this.refreshButton = new System.Windows.Forms.Button();
+
             ((System.ComponentModel.ISupportInitialize)(this.allQuestionsGrid)).BeginInit();
             this.settingsPanel.SuspendLayout();
             this.SuspendLayout();
@@ -131,6 +132,7 @@
             this.refreshButton.Name = "refreshButton";
             this.refreshButton.UseVisualStyleBackColor = true;
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+
             // 
             // LandingForm
             // 

@@ -6,12 +6,12 @@ namespace QuestionEntities
 {
     public class SliderQuestion : Question
     {
-        private int _StartValue;
-        private int _EndValue;
+        private byte _StartValue;
+        private byte _EndValue;
         private string _StartValueCaption;
         private string _EndValueCaption;
 
-        public int StartValue
+        public byte StartValue
         {
             get { return _StartValue; }
             set
@@ -24,7 +24,7 @@ namespace QuestionEntities
                 _StartValue = value;
             }
         }
-        public int EndValue
+        public byte EndValue
         {
             get { return _EndValue; }
             set
@@ -65,7 +65,7 @@ namespace QuestionEntities
         }
 
         public SliderQuestion
-            (int pId, int pOrder, string pText, int pStartValue, int pEndValue, string pStartValueCaption, string pEndValueCaption)
+            (int pId, byte pOrder, string pText, byte pStartValue, byte pEndValue, string pStartValueCaption, string pEndValueCaption)
             : base (pId, pOrder, pText, "Slider")
         {
             try
@@ -121,8 +121,8 @@ namespace QuestionEntities
 
             try
             {
-                StartValue = Convert.ToInt32(pDataDictionary["StartValue"]);
-                EndValue = Convert.ToInt32(pDataDictionary["EndValue"]);
+                StartValue = Convert.ToByte(pDataDictionary["StartValue"]);
+                EndValue = Convert.ToByte(pDataDictionary["EndValue"]);
                 StartValueCaption = pDataDictionary["StartValueCaption"];
                 EndValueCaption = pDataDictionary["EndValueCaption"];
             }

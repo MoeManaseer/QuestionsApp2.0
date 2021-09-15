@@ -279,6 +279,54 @@
   <data name="&gt;&gt;containerStar.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="&gt;&gt;input_NumberOfSmiley.Name" xml:space="preserve">
+    <value>input_NumberOfSmiley</value>
+  </data>
+  <data name="&gt;&gt;input_NumberOfSmiley.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;input_NumberOfSmiley.Parent" xml:space="preserve">
+    <value>containerSmiley</value>
+  </data>
+  <data name="&gt;&gt;input_NumberOfSmiley.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>containerSmiley</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="containerSmiley.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 172</value>
+  </data>
+  <data name="containerSmiley.Size" type="System.Drawing.Size, System.Drawing">
+    <value>345, 126</value>
+  </data>
+  <data name="containerSmiley.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="containerSmiley.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;containerSmiley.Name" xml:space="preserve">
+    <value>containerSmiley</value>
+  </data>
+  <data name="&gt;&gt;containerSmiley.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;containerSmiley.Parent" xml:space="preserve">
+    <value>containerQuestion</value>
+  </data>
+  <data name="&gt;&gt;containerSmiley.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
   <data name="input_NumberOfSmiley.Location" type="System.Drawing.Point, System.Drawing">
     <value>265, 4</value>
   </data>
@@ -330,30 +378,6 @@
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="containerSmiley.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 172</value>
-  </data>
-  <data name="containerSmiley.Size" type="System.Drawing.Size, System.Drawing">
-    <value>345, 126</value>
-  </data>
-  <data name="containerSmiley.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="containerSmiley.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;containerSmiley.Name" xml:space="preserve">
-    <value>containerSmiley</value>
-  </data>
-  <data name="&gt;&gt;containerSmiley.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;containerSmiley.Parent" xml:space="preserve">
-    <value>containerQuestion</value>
-  </data>
-  <data name="&gt;&gt;containerSmiley.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="input_Order.Location" type="System.Drawing.Point, System.Drawing">
     <value>265, 147</value>
   </data>
@@ -377,6 +401,126 @@
   </data>
   <data name="&gt;&gt;input_Order.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="&gt;&gt;input_EndValueCaption.Name" xml:space="preserve">
+    <value>input_EndValueCaption</value>
+  </data>
+  <data name="&gt;&gt;input_EndValueCaption.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;input_EndValueCaption.Parent" xml:space="preserve">
+    <value>containerSlider</value>
+  </data>
+  <data name="&gt;&gt;input_EndValueCaption.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>containerSlider</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;input_StartValueCaption.Name" xml:space="preserve">
+    <value>input_StartValueCaption</value>
+  </data>
+  <data name="&gt;&gt;input_StartValueCaption.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;input_StartValueCaption.Parent" xml:space="preserve">
+    <value>containerSlider</value>
+  </data>
+  <data name="&gt;&gt;input_StartValueCaption.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>containerSlider</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;input_EndValue.Name" xml:space="preserve">
+    <value>input_EndValue</value>
+  </data>
+  <data name="&gt;&gt;input_EndValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;input_EndValue.Parent" xml:space="preserve">
+    <value>containerSlider</value>
+  </data>
+  <data name="&gt;&gt;input_EndValue.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>containerSlider</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;input_StartValue.Name" xml:space="preserve">
+    <value>input_StartValue</value>
+  </data>
+  <data name="&gt;&gt;input_StartValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;input_StartValue.Parent" xml:space="preserve">
+    <value>containerSlider</value>
+  </data>
+  <data name="&gt;&gt;input_StartValue.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>containerSlider</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="containerSlider.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 172</value>
+  </data>
+  <data name="containerSlider.Size" type="System.Drawing.Size, System.Drawing">
+    <value>345, 181</value>
+  </data>
+  <data name="containerSlider.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="containerSlider.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;containerSlider.Name" xml:space="preserve">
+    <value>containerSlider</value>
+  </data>
+  <data name="&gt;&gt;containerSlider.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;containerSlider.Parent" xml:space="preserve">
+    <value>containerQuestion</value>
+  </data>
+  <data name="&gt;&gt;containerSlider.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="input_EndValueCaption.Location" type="System.Drawing.Point, System.Drawing">
     <value>102, 117</value>
@@ -593,30 +737,6 @@
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>7</value>
-  </data>
-  <data name="containerSlider.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 172</value>
-  </data>
-  <data name="containerSlider.Size" type="System.Drawing.Size, System.Drawing">
-    <value>345, 181</value>
-  </data>
-  <data name="containerSlider.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="containerSlider.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;containerSlider.Name" xml:space="preserve">
-    <value>containerSlider</value>
-  </data>
-  <data name="&gt;&gt;containerSlider.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;containerSlider.Parent" xml:space="preserve">
-    <value>containerQuestion</value>
-  </data>
-  <data name="&gt;&gt;containerSlider.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="questionTypeCombo.Location" type="System.Drawing.Point, System.Drawing">
     <value>195, 12</value>

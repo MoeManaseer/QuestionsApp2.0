@@ -21,7 +21,7 @@ namespace QuestionsApp
         private List<Control> QuestionsInputFieldList;
         private Dictionary<string, string> QuestionTypesDictionary;
         private const string LanguageString = "Language";
-        private readonly string CurrentLanguage = ConfigurationManager.AppSettings[LanguageString];
+        private readonly string CurrentLanguage;
         private const string QuestionInputWrapper = "containerQuestion";
         private const string AddKey = "add";
         private const string UpdateKey = "update";
@@ -42,6 +42,7 @@ namespace QuestionsApp
         {
             try
             {
+                CurrentLanguage = ConfigurationManager.AppSettings[LanguageString];
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(CurrentLanguage);
                 InitializeComponent();
                 QuestionsHandlerObject = pQuestionsHandlerObject;
@@ -61,6 +62,7 @@ namespace QuestionsApp
         {
             try
             {
+                CurrentLanguage = ConfigurationManager.AppSettings[LanguageString];
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(CurrentLanguage);
                 InitializeComponent();
                 QuestionsHandlerObject = pQuestionsHandlerObject;
@@ -127,7 +129,7 @@ namespace QuestionsApp
                 foreach (QuestionTypes tQuestionType in Enum.GetValues(typeof(QuestionTypes)))
                 {
                     string tQuestionTypeString = tQuestionType.ToString();
-                    QuestionTypesDictionary.Add(tQuestionTypeString, tQuestionTypeString);
+                    QuestionTypesDictionary.Add(tQuestionTypeString, MessagesUtility.GetResourceValue(tQuestionTypeString + "_" + CurrentLanguage));
                 }
             }
             catch (Exception tException)

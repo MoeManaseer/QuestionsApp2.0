@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Timers;
 using LoggerUtils;
 using QuestionDatabase;
 using QuestionEntities;
@@ -11,7 +12,9 @@ namespace QuestionsController
     public class QuestionsHandler
     {
         private DatabaseController DatabaseController;
-        public BindingList<Question> QuestionsList { get; private set; }
+        private Timer UpdateDataTimer;
+        public event EventHandler UpdateData;
+        public List<Question> QuestionsList { get; private set; }
         private ListSortDirection CurrentSortDirection;
         private int CurrentSortValueEnum; 
         private enum SortableValueNames
@@ -26,10 +29,11 @@ namespace QuestionsController
         {
             try
             {
-                QuestionsList = new BindingList<Question>();
+                QuestionsList = new List<Question>();
                 DatabaseController = new DatabaseController();
                 CurrentSortDirection = ListSortDirection.Ascending;
                 CurrentSortValueEnum = (int) SortableValueNames.Id;
+                InitTimer();
             }
             catch (Exception tException)
             {
@@ -38,7 +42,48 @@ namespace QuestionsController
         }
 
         /// <summary>
-        /// Fills the BindingList with data from the database
+        /// Initializes the UpdateTimer
+        /// </summary>
+        private void InitTimer()
+        {
+            try
+            {
+                // Create a timer with ten seconds interval.
+                UpdateDataTimer = new Timer(20000);
+                UpdateDataTimer.Elapsed += OnTimedEvent;
+                UpdateDataTimer.Enabled = true;
+            }
+            catch (Exception tException)
+            {
+                Logger.WriteExceptionMessage(tException);
+            }
+        }
+
+        /// <summary>
+        /// The timer onElapsed function that fires whenever the timer finishes It's interval
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                int tResultCode = UpdateQuestionsData();
+
+                // If new data cameback, invoke the UI to update It's data
+                if (tResultCode == (int)ResultCodesEnum.SUCCESS)
+                {
+                    UpdateData?.Invoke(this, new EventArgs());
+                }
+            }
+            catch (Exception tException)
+            {
+                Logger.WriteExceptionMessage(tException);
+            }
+        }
+
+        /// <summary>
+        /// Fills the List with data from the database
         /// </summary>
         /// <returns>A response code represnting what happend</returns>
         public int FillQuestionsData()
@@ -47,18 +92,8 @@ namespace QuestionsController
 
             try
             {
-                // Create a new instance of the bindinglist so that data Isn't duplicated 
-                BindingList<Question> tQuestionsList = new BindingList<Question>();
-                tResultCode = DatabaseController.GetData(tQuestionsList);
-
-                if (tResultCode == (int) ResultCodesEnum.SUCCESS)
-                {
-                    QuestionsList.Clear();
-                    foreach(Question tQuestion in tQuestionsList)
-                    {
-                        QuestionsList.Add(tQuestion);
-                    }
-                }
+                // Create a new instance of the List so that data Isn't duplicated 
+                tResultCode = DatabaseController.GetData(QuestionsList);
             }
             catch (Exception tException)
             {
@@ -70,7 +105,7 @@ namespace QuestionsController
         }
 
         /// <summary>
-        /// Updates the BindingList with data from the database
+        /// Updates the List with data from the database
         /// </summary>
         /// <returns>A response code represnting what happend</returns>
         public int UpdateQuestionsData()
@@ -79,23 +114,22 @@ namespace QuestionsController
 
             try
             {
-                // Sort the array by the Id so that the update operating works correctly
-                SortQuestions(SortableValueNames.Id.ToString(), ListSortDirection.Ascending, false);
-                BindingList<Question> tQuestionsList = new BindingList<Question>(QuestionsList.ToList());
+                // Only sort the array when we actually need to, meaning if It's sorted in a different way than the original state
+                bool tShouldSortList = !((int)SortableValueNames.Id == CurrentSortValueEnum && ListSortDirection.Ascending == CurrentSortDirection);
 
-                tResultCode = DatabaseController.UpdateData(tQuestionsList);
-
-                if (tResultCode == (int) ResultCodesEnum.SUCCESS)
+                if (tShouldSortList)
                 {
-                    QuestionsList.Clear();
-                    foreach (Question tQuestion in tQuestionsList)
-                    {
-                        QuestionsList.Add(tQuestion);
-                    }
+                    // Sort the array by the Id so that the update operating works correctly
+                    SortQuestions(SortableValueNames.Id.ToString(), ListSortDirection.Ascending, false);
                 }
 
-                // Resort the list using the already selected sort types after refreshing the data
-                SortQuestions(Enum.GetName(typeof(SortableValueNames), CurrentSortValueEnum) , CurrentSortDirection, false);
+                tResultCode = DatabaseController.UpdateData(QuestionsList);
+
+                if (tShouldSortList)
+                {
+                    // Resort the list using the already selected sort types after refreshing the data
+                    SortQuestions(Enum.GetName(typeof(SortableValueNames), CurrentSortValueEnum) , CurrentSortDirection, false);
+                }
             }
             catch (Exception tException)
             {
@@ -130,7 +164,7 @@ namespace QuestionsController
         }
 
         /// <summary>
-        /// Adds a new question to the database, and if that succeeds, add it to the BindingList
+        /// Adds a new question to the database, and if that succeeds, add it to the List
         /// </summary>
         /// <param name="pQuestion"></param>
         /// <returns>A response code represnting what happend</returns>
@@ -142,7 +176,7 @@ namespace QuestionsController
             {
                 tResultCode = DatabaseController.AddQuestion(pQuestion);
 
-                // On success, add the current object to the BindingList
+                // On success, add the current object to the List
                 if ((int)ResultCodesEnum.SUCCESS == tResultCode)
                 {
                     QuestionsList.Add(pQuestion);
@@ -158,7 +192,7 @@ namespace QuestionsController
         }
 
         /// <summary>
-        /// Edits a question in the database, and if that succeeds, edit it in the BindingList then notify the UI
+        /// Edits a question in the database, and if that succeeds, edit it in the List then notify the UI
         /// </summary>
         /// <param name="pQuestion"></param>
         /// <returns>A response code represnting what happend</returns>
@@ -172,10 +206,9 @@ namespace QuestionsController
 
                 if ((int)ResultCodesEnum.SUCCESS == tResultCode)
                 {
-                    // Get the instance of the question in the BindingList then update It's data with the new instance passed
+                    // Get the instance of the question in the List then update It's data with the new instance passed
                     QuestionsList.FirstOrDefault(tQuestion => tQuestion.Id == pQuestion.Id).UpdateQuestion(pQuestion);
                     // Notify the UI that a value was updated so that the UI also updates
-                    QuestionsList.ResetBindings();
                 }
             }
             catch (Exception tException)
@@ -188,7 +221,7 @@ namespace QuestionsController
         }
 
         /// <summary>
-        /// Removes a question in the database, and if that succeeds, remove it from the BindingList
+        /// Removes a question in the database, and if that succeeds, remove it from the List
         /// </summary>
         /// <param name="pQuestion"></param>
         /// <returns>A response code represnting what happend</returns>
@@ -284,7 +317,7 @@ namespace QuestionsController
         }
 
         /// <summary>
-        /// Util function that sorts the questions BindingList
+        /// Util function that sorts the questions List
         /// </summary>
         /// <param name="pValueName">The name value to sort by</param>
         /// <param name="pDirection">The sort direction, ASC, DECS</param>
@@ -295,27 +328,25 @@ namespace QuestionsController
 
             try
             {
-                // Create a new temporary List
-                List<Question> tQuestionsList = new List<Question>();
                 Enum.TryParse(pValueName, out SortableValueNames tSortableValueEnum);
 
                 // Based on the valueName sent in the params, pick which proportie to sort by
                 switch (tSortableValueEnum)
                 {
                     case SortableValueNames.Type:
-                        tQuestionsList = (pDirection == ListSortDirection.Descending) ? 
+                        QuestionsList = (pDirection == ListSortDirection.Descending) ? 
                             QuestionsList.OrderByDescending(tQuestion => tQuestion.Type).ToList() : QuestionsList.OrderBy(tQuestion => tQuestion.Type).ToList();
                         break;
                     case SortableValueNames.Order:
-                        tQuestionsList = (pDirection == ListSortDirection.Descending) ?
+                        QuestionsList = (pDirection == ListSortDirection.Descending) ?
                             QuestionsList.OrderByDescending(tQuestion => tQuestion.Order).ToList() : QuestionsList.OrderBy(tQuestion => tQuestion.Order).ToList();
                         break;
                     case SortableValueNames.Text:
-                        tQuestionsList = (pDirection == ListSortDirection.Descending) ?
+                        QuestionsList = (pDirection == ListSortDirection.Descending) ?
                             QuestionsList.OrderByDescending(tQuestion => tQuestion.Text).ToList() : QuestionsList.OrderBy(tQuestion => tQuestion.Text).ToList();
                         break;
                     default:
-                        tQuestionsList = (pDirection == ListSortDirection.Descending) ?
+                        QuestionsList = (pDirection == ListSortDirection.Descending) ?
                             QuestionsList.OrderByDescending(tQuestion => tQuestion.Id).ToList() : QuestionsList.OrderBy(tQuestion => tQuestion.Id).ToList();
                         break;
                 }
@@ -325,9 +356,6 @@ namespace QuestionsController
                     CurrentSortDirection = pDirection;
                     CurrentSortValueEnum = (int)tSortableValueEnum;
                 }
-
-                // Recreate the QuestionsList instance with a new one containing the sorted items
-                QuestionsList = new BindingList<Question>(tQuestionsList);
             }
             catch (Exception tException)
             {

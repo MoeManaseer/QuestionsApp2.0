@@ -7,7 +7,7 @@ namespace QuestionEntities
     public class Question
     {
         private int _Id;
-        private int _Order;
+        private byte _Order;
         private string _type;
         private string _Text;
 
@@ -16,7 +16,7 @@ namespace QuestionEntities
             get { return _Id; }
             set { _Id = value; }
         }
-        public int Order
+        public byte Order
         {
             get { return _Order; }
             set
@@ -56,7 +56,7 @@ namespace QuestionEntities
             }
         }
 
-        public Question(int pId, int pOrder, string pText, string pType)
+        public Question(int pId, byte pOrder, string pText, string pType)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace QuestionEntities
 
             try
             {
-                Order = Convert.ToInt32(pDataDictionary["Order"]);
+                Order = Convert.ToByte(pDataDictionary["Order"]);
                 Text = pDataDictionary["Text"];
 
                 tUpdated = true;

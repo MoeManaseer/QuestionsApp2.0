@@ -101,7 +101,6 @@ D:\source\repos\QuestionsApp\QuestionsApp\bin\Debug\System.Xml.XPath.XDocument.d
 D:\source\repos\QuestionsApp\QuestionsApp\bin\Debug\LoggerUtils.dll
 D:\source\repos\QuestionsApp\QuestionsApp\bin\Debug\QuestionDatabase.dll
 D:\source\repos\QuestionsApp\QuestionsApp\bin\Debug\QuestionEntities.dll
-D:\source\repos\QuestionsApp\QuestionsApp\bin\Debug\QuestionsController.dll
 D:\source\repos\QuestionsApp\QuestionsApp\bin\Debug\QuestionDatabase.pdb
 D:\source\repos\QuestionsApp\QuestionsApp\bin\Debug\LoggerUtils.pdb
 D:\source\repos\QuestionsApp\QuestionsApp\bin\Debug\QuestionEntities.pdb
@@ -122,3 +121,4 @@ D:\source\repos\QuestionsApp\QuestionsApp\obj\Debug\ar\QuestionsApp.resources.dl
 D:\source\repos\QuestionsApp\QuestionsApp\obj\Debug\QuestionsApp.csproj.CopyComplete
 D:\source\repos\QuestionsApp\QuestionsApp\obj\Debug\QuestionsApp.exe
 D:\source\repos\QuestionsApp\QuestionsApp\obj\Debug\QuestionsApp.pdb
+D:\source\repos\QuestionsApp\QuestionsApp\bin\Debug\QuestionsController.dll

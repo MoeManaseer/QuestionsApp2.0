@@ -12,8 +12,11 @@ namespace QuestionDatabase
     {
         private SqlConnection SQLConnection;
         public ConnectionString ConnectionString { private set; get; }
+        private int CurrentDataState { get; set; }
+        private int MaxIntValue = 2147483647;
         private const string TestQueryString = "SELECT 1 FROM AllQuestions;";
         private const string GetAllQuestionsQueryString = "SELECT * FROM AllQuestions;";
+        private const string GetCurrentStateQueryString = "SELECT MAX(CurrentState) FROM QuestionsState";
         private const string IdKey = "Id";
         private const string TextKey = "Text";
         private const string TypeKey = "Type";
@@ -30,11 +33,53 @@ namespace QuestionDatabase
             {
                 // Get a new instance of connection string from the app.config
                 ConnectionString = new ConnectionString();
+                CurrentDataState = GetCurrentDataState();
             }
             catch (Exception e)
             {
                 Logger.WriteExceptionMessage(e);
             }
+        }
+
+        /// <summary>
+        /// Returns the current databaseData state
+        /// </summary>
+        /// <returns>The current state of the data in the database</returns>
+        private int GetCurrentDataState()
+        {
+            int tCurrentDataState = CurrentDataState;
+            SqlCommand tSQLCommand = null;
+
+            try
+            {
+                SQLConnection = new SqlConnection(ConnectionString.ToString());
+                tSQLCommand = new SqlCommand(GetCurrentStateQueryString, SQLConnection);
+                SQLConnection.Open();
+
+                tCurrentDataState = Convert.ToInt32(tSQLCommand.ExecuteScalar());
+            }
+            catch (SqlException tSQLException)
+            {
+                Logger.WriteExceptionMessage(tSQLException);
+            }
+            catch (Exception tException)
+            {
+                Logger.WriteExceptionMessage(tException);
+            }
+            finally
+            {
+                if (tSQLCommand != null)
+                {
+                    tSQLCommand.Dispose();
+                }
+
+                if (SQLConnection.State == ConnectionState.Open)
+                {
+                    SQLConnection.Close();
+                }
+            }
+
+            return tCurrentDataState;
         }
 
         /// <summary>
@@ -113,7 +158,7 @@ namespace QuestionDatabase
         /// <param name="pQuestionsDataSet">The dataset to be constructed</param>
         /// <param name="pTableNames">The table names to get from the database</param>
         /// <returns>a result code to be used to determine if success or failure</returns>
-        public int GetData(BindingList<Question> pQuestionsList)
+        public int GetData(List<Question> pQuestionsList)
         {
             SqlCommand tSQLCommand = null;
             SqlDataReader tSQLReader = null;
@@ -126,7 +171,7 @@ namespace QuestionDatabase
                 tSQLCommand = new SqlCommand(GetAllQuestionsQueryString, SQLConnection);
                 SQLConnection.Open();
 
-                tSQLReader = tSQLCommand.ExecuteReader(CommandBehavior.KeyInfo);
+                tSQLReader = tSQLCommand.ExecuteReader();
 
                 // Loop over the records and add them to the questions list
                 while (tSQLReader.Read())
@@ -136,10 +181,13 @@ namespace QuestionDatabase
                     tQuestion.Id = Convert.ToInt32(tSQLReader[IdKey]);
                     tQuestion.Text = Convert.ToString(tSQLReader[TextKey]);
                     tQuestion.Type = Convert.ToString(tSQLReader[TypeKey]);
-                    tQuestion.Order = Convert.ToInt32(tSQLReader[OrderKey]);
+                    tQuestion.Order = Convert.ToByte(tSQLReader[OrderKey]);
 
                     pQuestionsList.Add(tQuestion);
                 }
+
+                // Whenever we get fresh data, reset the CurrentState int
+                CurrentDataState = GetCurrentDataState();
             }
             catch (SqlException tSQLException)
             {
@@ -178,20 +226,29 @@ namespace QuestionDatabase
         /// </summary>
         /// <param name="pQuestionsList">The list of Questions</param>
         /// <returns>a result code to be used to determine if success or failure</returns>
-        public int UpdateData(BindingList<Question> pQuestionsList)
+        public int UpdateData(List<Question> pQuestionsList)
         {
             SqlCommand tSQLCommand = null;
             SqlDataReader tSQLReader = null;
             int tResultCode = (int)ResultCodesEnum.SUCCESS;
+            int tCurrentState = CurrentDataState;
 
             try
             {
+                tCurrentState = GetCurrentDataState();
+
+                // If the current state is the same as the database state, don't fetch any new data.
+                if (tCurrentState == CurrentDataState)
+                {
+                    return (int) ResultCodesEnum.UP_TO_DATE;
+                }
+
                 SQLConnection = new SqlConnection(ConnectionString.ToString());
 
                 tSQLCommand = new SqlCommand(GetAllQuestionsQueryString, SQLConnection);
                 SQLConnection.Open();
 
-                tSQLReader = tSQLCommand.ExecuteReader(CommandBehavior.KeyInfo);
+                tSQLReader = tSQLCommand.ExecuteReader();
                 tSQLReader.Read();
 
                 int tQuestionsListPointer = 0;
@@ -214,7 +271,7 @@ namespace QuestionDatabase
                             tQuestion.Id = tCurrentId;
                             tQuestion.Text = Convert.ToString(tSQLReader[TextKey]);
                             tQuestion.Type = Convert.ToString(tSQLReader[TypeKey]);
-                            tQuestion.Order = Convert.ToInt32(tSQLReader[OrderKey]);
+                            tQuestion.Order = Convert.ToByte(tSQLReader[OrderKey]);
 
                             if (pQuestionsList[tQuestionsListPointer].Id > tCurrentId)
                             {
@@ -240,7 +297,7 @@ namespace QuestionDatabase
                         tQuestion.Id = Convert.ToInt32(tSQLReader[IdKey]);
                         tQuestion.Text = Convert.ToString(tSQLReader[TextKey]);
                         tQuestion.Type = Convert.ToString(tSQLReader[TypeKey]);
-                        tQuestion.Order = Convert.ToInt32(tSQLReader[OrderKey]);
+                        tQuestion.Order = Convert.ToByte(tSQLReader[OrderKey]);
 
                         pQuestionsList.Add(tQuestion);
                         tQuestionsListPointer++;
@@ -252,6 +309,9 @@ namespace QuestionDatabase
                 {
                     pQuestionsList.RemoveAt(pQuestionsList.Count - 1);
                 }
+
+                // Assign the currentDataState with the new DataState after updating the current data
+                CurrentDataState = tCurrentState;
             }
             catch (SqlException tSQLException)
             {
@@ -293,7 +353,7 @@ namespace QuestionDatabase
         {
             SqlCommand tSQLCommand = null;
             SqlDataReader tSQLReader = null;
-            int tResultCode = (int)ResultCodesEnum.QUESTION_OUT_OF_DATE;
+            int tResultCode = (int) ResultCodesEnum.QUESTION_OUT_OF_DATE;
 
             try
             {
@@ -301,7 +361,6 @@ namespace QuestionDatabase
                 string tQuestionTableName = pQuestion.Type + QuestionsString;
 
                 SQLConnection = new SqlConnection(ConnectionString.ToString());
-                SQLConnection.Open();
 
                 // Get the correct procedure based on the tablename
                 tSQLCommand = new SqlCommand(GetString + "_" + tQuestionTableName, SQLConnection)
@@ -311,6 +370,7 @@ namespace QuestionDatabase
 
                 tSQLCommand.Parameters.Add(new SqlParameter("@" + IdKey, tQuestionId));
 
+                SQLConnection.Open();
                 tSQLReader = tSQLCommand.ExecuteReader(CommandBehavior.KeyInfo);
 
                 while (tSQLReader.Read())
@@ -369,7 +429,6 @@ namespace QuestionDatabase
         /// <returns>a result code to be used to determine if success or failure</returns>
         public int AddQuestion(Question pQuestion)
         {
-            SqlTransaction tSQLTransaction = null;
             SqlCommand tSQLCommand = null;
             int tResultCode = (int)ResultCodesEnum.SUCCESS;
 
@@ -378,11 +437,9 @@ namespace QuestionDatabase
                 string tTableName = pQuestion.Type + QuestionsString;
 
                 SQLConnection = new SqlConnection(ConnectionString.ToString());
-                SQLConnection.Open();
-                tSQLTransaction = SQLConnection.BeginTransaction();
 
                 // Get the correct procedure based on the tablename
-                tSQLCommand = new SqlCommand(AddString + "_" + tTableName, SQLConnection, tSQLTransaction)
+                tSQLCommand = new SqlCommand(AddString + "_" + tTableName, SQLConnection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -404,25 +461,25 @@ namespace QuestionDatabase
 
                 tSQLCommand.Parameters.Add(tNewQuestionId);
 
+                SQLConnection.Open();
                 tResultCode = tSQLCommand.ExecuteNonQuery() != 0 ? (int)ResultCodesEnum.SUCCESS : (int)ResultCodesEnum.ADD_FAILURE;
 
                 // If the procedure succeds, get the newly created Id from the database and insert it into the question instance
                 pQuestion.Id = Convert.ToInt32(tNewQuestionId.Value);
-                tSQLTransaction.Commit();
+
+                if ((int)ResultCodesEnum.SUCCESS == tResultCode)
+                {
+                    CurrentDataState = (CurrentDataState + 1) % MaxIntValue; ;
+                }
             }
             catch (SqlException tSQLException)
             {
-                if (tSQLTransaction != null)
-                {
-                    tSQLTransaction.Rollback();
-                }
                 Logger.WriteExceptionMessage(tSQLException);
                 // Gets the corosponding database error code enum
                 tResultCode = QuestionUtilities.GetDatabaseError(tSQLException.Number);
             }
             catch (Exception tException)
             {
-                tSQLTransaction.Rollback();
                 Logger.WriteExceptionMessage(tException);
                 tResultCode = (int)ResultCodesEnum.CODE_FAILUER;
             }
@@ -449,7 +506,6 @@ namespace QuestionDatabase
         /// <returns>a result code to be used to determine if success or failure</returns>
         public int EditQuestion(Question pQuestion)
         {
-            SqlTransaction tSQLTransaction = null;
             SqlCommand tSQLCommand = null;
             int tResultCode = (int)ResultCodesEnum.SUCCESS;
 
@@ -458,11 +514,9 @@ namespace QuestionDatabase
                 string tTableName = pQuestion.Type + QuestionsString;
 
                 SQLConnection = new SqlConnection(ConnectionString.ToString());
-                SQLConnection.Open();
-                tSQLTransaction = SQLConnection.BeginTransaction();
 
                 // Get the correct procedure based on the tablename
-                tSQLCommand = new SqlCommand(UpdateString + "_" + tTableName, SQLConnection, tSQLTransaction)
+                tSQLCommand = new SqlCommand(UpdateString + "_" + tTableName, SQLConnection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -479,16 +533,16 @@ namespace QuestionDatabase
                 // Add the question Id individually
                 tSQLCommand.Parameters.Add(new SqlParameter("@" + IdKey, pQuestion.Id));
 
+                SQLConnection.Open();
                 tResultCode = tSQLCommand.ExecuteNonQuery() != 0 ? (int)ResultCodesEnum.SUCCESS : (int)ResultCodesEnum.QUESTION_OUT_OF_DATE;
 
-                tSQLTransaction.Commit();
+                if ((int)ResultCodesEnum.SUCCESS == tResultCode)
+                {
+                    CurrentDataState = (CurrentDataState + 1) % MaxIntValue; ;
+                }
             }
             catch (SqlException tSQLException)
             {
-                if (tSQLTransaction != null)
-                {
-                    tSQLTransaction.Rollback();
-                }
                 Logger.WriteExceptionMessage(tSQLException);
                 // Gets the corosponding database error code enum
                 tResultCode = QuestionUtilities.GetDatabaseError(tSQLException.Number);
@@ -521,7 +575,6 @@ namespace QuestionDatabase
         /// <returns>a result code to be used to determine if success or failure</returns>
         public int DeleteQuestion(Question pQuestion)
         {
-            SqlTransaction tSQLTransaction = null;
             SqlCommand tSQLCommand = null;
             int tResultCode = (int)ResultCodesEnum.SUCCESS;
 
@@ -532,11 +585,9 @@ namespace QuestionDatabase
                 int tQuestionId = pQuestion.Id;
 
                 SQLConnection = new SqlConnection(ConnectionString.ToString());
-                SQLConnection.Open();
-                tSQLTransaction = SQLConnection.BeginTransaction();
 
                 // Get the correct procedure based on the tablename
-                tSQLCommand = new SqlCommand(DeleteString + "_" + tTableName, SQLConnection, tSQLTransaction)
+                tSQLCommand = new SqlCommand(DeleteString + "_" + tTableName, SQLConnection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -544,23 +595,22 @@ namespace QuestionDatabase
                 // Add the @Id param with the current question Id
                 tSQLCommand.Parameters.Add(new SqlParameter("@" + IdKey, tQuestionId));
 
+                SQLConnection.Open();
                 tResultCode = tSQLCommand.ExecuteNonQuery() != 0 ? (int)ResultCodesEnum.SUCCESS : (int)ResultCodesEnum.QUESTION_OUT_OF_DATE;
 
-                tSQLTransaction.Commit();
+                if ((int)ResultCodesEnum.SUCCESS == tResultCode)
+                {
+                    CurrentDataState = (CurrentDataState + 1) % MaxIntValue; ;
+                }
             }
             catch (SqlException tSQLException)
             {
-                if (tSQLTransaction != null)
-                {
-                    tSQLTransaction.Rollback();
-                }
                 Logger.WriteExceptionMessage(tSQLException);
                 // Gets the corosponding database error code enum
                 tResultCode = QuestionUtilities.GetDatabaseError(tSQLException.Number);
             }
             catch (Exception e)
             {
-                tSQLTransaction.Rollback();
                 Logger.WriteExceptionMessage(e);
                 tResultCode = (int)ResultCodesEnum.CODE_FAILUER;
             }

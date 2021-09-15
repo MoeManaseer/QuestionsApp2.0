@@ -12,6 +12,7 @@ namespace QuestionEntities
         NOTHING_TO_UPDATE = 4,
         EMPTY_FIELDS = 5,
         CONNECTION_STRING_FAILURE = 6,
+        UP_TO_DATE = 7,
         DATABASE_ERROR = 10,
         DATABASE_AUTHENTICATION_FAILUER = 11,
         DATABASE_CONNECTION_DENIED = 12,

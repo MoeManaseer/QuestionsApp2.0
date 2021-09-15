@@ -95,8 +95,18 @@
             0,
             0,
             0});
+            this.input_NumberOfStar.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.input_NumberOfStar.Name = "input_NumberOfStar";
             this.input_NumberOfStar.Tag = "Number of stars";
+            this.input_NumberOfStar.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // textbox4
             // 

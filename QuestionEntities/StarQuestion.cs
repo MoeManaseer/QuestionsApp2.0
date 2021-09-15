@@ -6,9 +6,9 @@ namespace QuestionEntities
 {
     public class StarQuestion : Question
     {
-        private int _NumberOfStar;
+        private byte _NumberOfStar;
 
-        public int NumberOfStar
+        public byte NumberOfStar
         {
             get { return _NumberOfStar; }
             set
@@ -22,7 +22,7 @@ namespace QuestionEntities
             }
         }
         public StarQuestion
-            (int pId, int pOrder, string pText, int pNumberOfStar)
+            (int pId, byte pOrder, string pText, byte pNumberOfStar)
             : base(pId, pOrder, pText, "Star")
         {
             try
@@ -36,7 +36,7 @@ namespace QuestionEntities
         }
 
         public StarQuestion()
-            : this(0, 0, "", 0)
+            : this(0, 0, "", 1)
         {
 
         }
@@ -72,7 +72,7 @@ namespace QuestionEntities
 
             try
             {
-                NumberOfStar = Convert.ToInt32(pDataDictionary["NumberOfStar"]);
+                NumberOfStar = Convert.ToByte(pDataDictionary["NumberOfStar"]);
             }
             catch (Exception tException)
             {
