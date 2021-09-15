@@ -387,4 +387,10 @@
   <data name="Star_en" xml:space="preserve">
     <value>Star</value>
   </data>
+  <data name="settings_save_ar" xml:space="preserve">
+    <value>حفظ الإعدادات</value>
+  </data>
+  <data name="settings_save_en" xml:space="preserve">
+    <value>Settings Save</value>
+  </data>
 </root>

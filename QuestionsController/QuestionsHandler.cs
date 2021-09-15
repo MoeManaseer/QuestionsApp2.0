@@ -93,6 +93,7 @@ namespace QuestionsController
             try
             {
                 // Create a new instance of the List so that data Isn't duplicated 
+                QuestionsList = new List<Question>();
                 tResultCode = DatabaseController.GetData(QuestionsList);
             }
             catch (Exception tException)

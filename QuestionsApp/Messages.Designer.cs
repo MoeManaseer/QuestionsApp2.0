@@ -565,6 +565,15 @@ namespace QuestionsApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to حفظ الإعدادات.
+        /// </summary>
+        internal static string settings_save_ar {
+            get {
+                return ResourceManager.GetString("settings_save_ar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لم يتم حفظ الإعدادات ....
         /// </summary>
         internal static string settings_save_ar_failure {
@@ -579,6 +588,15 @@ namespace QuestionsApp {
         internal static string settings_save_ar_success {
             get {
                 return ResourceManager.GetString("settings_save_ar_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings Save.
+        /// </summary>
+        internal static string settings_save_en {
+            get {
+                return ResourceManager.GetString("settings_save_en", resourceCulture);
             }
         }
         
