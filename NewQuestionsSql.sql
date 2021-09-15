@@ -390,22 +390,3 @@ CREATE OR ALTER PROCEDURE [dbo].Get_StarQuestions
 		WHERE AllQuestions.Id = @Id;
 	END
 GO
-
-EXEC Add_SliderQuestions @Text = null, @Order = 4, @StartValue = 20, @EndValue = 55, @StartValueCaption = 'here', @EndValueCaption = 'salamy';
-EXEC Update_StarQuestions @Text = 'new text', @Order = 25, @NumberOfStar = 9, @Id = 58;
-EXEC Add_SmileyQuestions @Text = 'new', @Order = 66, @NumberOfSmiley = 3;
-EXEC Update_SmileyQuestions @Text = 'new tomato', @Order = 66, @NumberOfSmiley = 2, @Id = 20;
-EXEC Delete_SmileyQuestions @Id = 20;
-EXEC Delete_SliderQuestions @Id = 1;
-
-SELECT MAX(CurrentState) FROM QuestionsState;
-
-SELECT * FROM AllQuestions;
-SELECT * FROM SmileyQuestions;
-SELECT * FROM StarQuestions;
-SELECT * FROM SliderQuestions;
-
---DROP TABLE AllQuestions;
---DROP TABLE SmileyQuestions;
---DROP TABLE SliderQuestions;
---DROP TABLE StarQuestions;
