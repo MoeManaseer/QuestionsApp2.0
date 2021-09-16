@@ -143,6 +143,11 @@ namespace QuestionsApp
                 allQuestionsGrid.Columns[TypeKey].HeaderText = MessagesUtility.GetResourceValue(TypeKey + "_" + CurrentLanguage);
                 allQuestionsGrid.Columns[TextKey].HeaderText = MessagesUtility.GetResourceValue(TextKey + "_" + CurrentLanguage);
 
+                foreach (DataGridViewRow tRow in allQuestionsGrid.Rows)
+                {
+                    tRow.Cells[TypeKey].Value = MessagesUtility.GetResourceValue(tRow.Cells[TypeKey].Value + "_" + CurrentLanguage);
+                }
+
                 if (CurrentLanguage.ToLower().Equals(ArabicKey))
                 {
                     allQuestionsGrid.Columns[OrderKey].DisplayIndex = 3;

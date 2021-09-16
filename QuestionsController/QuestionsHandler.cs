@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Timers;
 using LoggerUtils;
 using QuestionDatabase;
@@ -12,7 +13,7 @@ namespace QuestionsController
     public class QuestionsHandler
     {
         private DatabaseController DatabaseController;
-        private Timer UpdateDataTimer;
+        private Thread UpdateDataThread;
         public event EventHandler UpdateData;
         public List<Question> QuestionsList { get; private set; }
         private ListSortDirection CurrentSortDirection;
@@ -33,7 +34,8 @@ namespace QuestionsController
                 DatabaseController = new DatabaseController();
                 CurrentSortDirection = ListSortDirection.Ascending;
                 CurrentSortValueEnum = (int) SortableValueNames.Id;
-                InitTimer();
+                UpdateDataThread = new Thread(UpdateDataThreadCall);
+                UpdateDataThread.Start();
             }
             catch (Exception tException)
             {
@@ -42,16 +44,25 @@ namespace QuestionsController
         }
 
         /// <summary>
-        /// Initializes the UpdateTimer
+        /// The updateThread function call
         /// </summary>
-        private void InitTimer()
+        private void UpdateDataThreadCall()
         {
             try
             {
-                // Create a timer with ten seconds interval.
-                UpdateDataTimer = new Timer(10000);
-                UpdateDataTimer.Elapsed += OnTimedEvent;
-                UpdateDataTimer.Enabled = true;
+                // Sleep this thread for 10 seconds
+                Thread.Sleep(10000);
+
+                int tResultCode = UpdateQuestionsData();
+
+                // If new data cameback, invoke the UI to update It's data
+                if (tResultCode == (int)ResultCodesEnum.SUCCESS)
+                {
+                    UpdateData?.Invoke(this, new EventArgs());
+                }
+
+                // Recall the function so that the data keeps updating every 10 seconds
+                UpdateDataThreadCall();
             }
             catch (Exception tException)
             {

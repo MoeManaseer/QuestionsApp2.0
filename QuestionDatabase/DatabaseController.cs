@@ -183,7 +183,10 @@ namespace QuestionDatabase
                     tQuestion.Type = Convert.ToString(tSQLReader[TypeKey]);
                     tQuestion.Order = Convert.ToByte(tSQLReader[OrderKey]);
 
-                    pQuestionsList.Add(tQuestion);
+                    if (tQuestion.ValidateQuestionFields())
+                    {
+                        pQuestionsList.Add(tQuestion);
+                    }
                 }
 
                 // Whenever we get fresh data, reset the CurrentState int
@@ -273,7 +276,7 @@ namespace QuestionDatabase
                             tQuestion.Type = Convert.ToString(tSQLReader[TypeKey]);
                             tQuestion.Order = Convert.ToByte(tSQLReader[OrderKey]);
 
-                            if (pQuestionsList[tQuestionsListPointer].Id > tCurrentId)
+                            if (pQuestionsList[tQuestionsListPointer].Id > tCurrentId && tQuestion.ValidateQuestionFields())
                             {
                                 pQuestionsList.Insert(tQuestionsListPointer, tQuestion);
                             }
@@ -299,8 +302,11 @@ namespace QuestionDatabase
                         tQuestion.Type = Convert.ToString(tSQLReader[TypeKey]);
                         tQuestion.Order = Convert.ToByte(tSQLReader[OrderKey]);
 
-                        pQuestionsList.Add(tQuestion);
-                        tQuestionsListPointer++;
+                        if (tQuestion.ValidateQuestionFields())
+                        {
+                            pQuestionsList.Add(tQuestion);
+                            tQuestionsListPointer++;
+                        }
                     }
                 }
                 

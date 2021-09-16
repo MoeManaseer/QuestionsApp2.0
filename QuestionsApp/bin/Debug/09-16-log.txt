@@ -1,0 +1,7 @@
+09/16 12:59:31 :-
+Thread is running or terminated; it cannot restart.
+   at System.Threading.Thread.StartupSetApartmentStateInternal()
+   at System.Threading.Thread.Start(StackCrawlMark& stackMark)
+   at System.Threading.Thread.Start()
+   at QuestionsController.QuestionsHandler.UpdateDataThreadCall()
+
