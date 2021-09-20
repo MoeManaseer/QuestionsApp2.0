@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "DBqotNEJ3kd/KoKROse1Wcs5kphWQlayBpMvMKIO+CHbjg1U6nWgBwIqU/0Yoa5oQBhIt1Hs8zC41B4lQqeKvA==",
+  "success": true,
+  "projectFilePath": "D:\\source\\repos\\QuestionsApp\\QuestionEntities\\QuestionEntities.csproj",
+  "expectedPackageFiles": [
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

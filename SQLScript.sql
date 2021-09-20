@@ -113,6 +113,7 @@ IF OBJECT_ID(N'[dbo].[StarNumber_constraint]') IS NULL
 		ADD CONSTRAINT StarNumber_constraint CHECK (NumberOfStar >= 1 AND NumberOfStar <= 10);
 GO
 
+
 CREATE OR ALTER PROCEDURE [dbo].Update_CurrentState
 	AS
 	BEGIN
@@ -141,10 +142,17 @@ CREATE OR ALTER PROCEDURE [dbo].Add_StarQuestions
 	BEGIN TRY	
 		BEGIN TRAN
 			SET XACT_ABORT ON;
+
+			-- Insert the new question in the main table
 			INSERT INTO AllQuestions VALUES('Star', @Order, @Text);
+			
+			-- Gets the newly created question Id
 			SET @Id = SCOPE_IDENTITY();
+
+			-- Inserts the new question into the StarQuestions table
 			INSERT INTO StarQuestions VALUES(@Id, @NumberOfStar);
 
+			-- Call the update_CurrentState procedure to notify for changes
 			EXEC [dbo].Update_CurrentState;
 		COMMIT TRAN
 	END TRY
@@ -162,10 +170,17 @@ CREATE OR ALTER PROCEDURE [dbo].Add_SliderQuestions
 	BEGIN TRY	
 		BEGIN TRAN
 			SET XACT_ABORT ON;
+
+			-- Insert the new question in the main table
 			INSERT INTO AllQuestions VALUES('Slider', @Order, @Text);
+			
+			-- Gets the newly created question Id
 			SET @Id = SCOPE_IDENTITY();
+			
+			-- Inserts the new question into the SliderQuestions table
 			INSERT INTO SliderQuestions VALUES(@Id, @StartValue, @EndValue, @StartValueCaption, @EndValueCaption);
 
+			-- Call the update_CurrentState procedure to notify for changes
 			EXEC [dbo].Update_CurrentState;
 		COMMIT TRAN
 	END TRY
@@ -183,10 +198,17 @@ CREATE OR ALTER PROCEDURE [dbo].Add_SmileyQuestions
 	BEGIN TRY	
 		BEGIN TRAN
 			SET XACT_ABORT ON;
+			
+			-- Insert the new question in the main table
 			INSERT INTO AllQuestions VALUES('Smiley', @Order, @Text);
+			
+			-- Gets the newly created question Id
 			SET @Id = SCOPE_IDENTITY();
+			
+			-- Inserts the new question into the SliderQuestions table
 			INSERT INTO SmileyQuestions VALUES(@Id, @NumberOfSmiley);
 
+			-- Call the update_CurrentState procedure to notify for changes
 			EXEC [dbo].Update_CurrentState;
 		COMMIT TRAN
 	END TRY
@@ -204,15 +226,23 @@ BEGIN
 	BEGIN TRY	
 		BEGIN TRAN
 			SET XACT_ABORT ON;
+			
+			-- Set the totlaRows variable to track number of rows changed
 			DECLARE @totalRows INT;
 			SET @totalRows = 0;
 			
+			-- Update the question in the main table with new data
 			UPDATE AllQuestions SET Text = @Text, [Order] = @Order WHERE Id = @Id AND Type = 'Star'; 
+			-- Add the number of rows affected
 			SET @totalRows = @totalRows + @@ROWCOUNT
 			
+			-- Updates the question in the StarQuestions with new data
 			UPDATE StarQuestions SET NumberOfStar = @NumberOfStar WHERE Id = @Id;   
+			-- Add the number of rows affected
 			SET @totalRows = @totalRows + @@ROWCOUNT
 
+			-- If affected rows = 2, update the currentState with new values sine the
+			-- question got updated successfuly
 			if (@totalRows = 2)
 				EXEC [dbo].Update_CurrentState;
 		COMMIT TRAN
@@ -231,15 +261,23 @@ BEGIN
 	BEGIN TRY	
 		BEGIN TRAN
 			SET XACT_ABORT ON;
+
+			-- Set the totlaRows variable to track number of rows changed
 			DECLARE @totalRows INT;
 			SET @totalRows = 0;
 			
+			-- Update the question in the main table with new data
 			UPDATE AllQuestions SET Text = @Text, [Order] = @Order WHERE Id = @Id AND Type = 'Slider'; 
+			-- Add the number of rows affected
 			SET @totalRows = @totalRows + @@ROWCOUNT
 			
+			-- Updates the question in the SliderQuestions with new data
 			UPDATE SliderQuestions SET StartValue = @StartValue, EndValue = @EndValue, StartValueCaption = @StartValueCaption, EndValueCaption = @EndValueCaption WHERE Id = @Id;   
+			-- Add the number of rows affected
 			SET @totalRows = @totalRows + @@ROWCOUNT
 
+			-- If affected rows = 2, update the currentState with new values sine the
+			-- question got updated successfuly
 			if (@totalRows = 2)
 				EXEC [dbo].Update_CurrentState;
 		COMMIT TRAN
@@ -258,15 +296,23 @@ BEGIN
 	BEGIN TRY	
 		BEGIN TRAN
 			SET XACT_ABORT ON;      
+			
+			-- Set the totlaRows variable to track number of rows changed
 			DECLARE @totalRows INT;
 			SET @totalRows = 0;
 
+			-- Update the question in the main table with new data
 			UPDATE AllQuestions SET Text = @Text, [Order] = @Order WHERE Id = @Id AND Type = 'Smiley';  
+			-- Add the number of rows affected
 			SET @totalRows = @totalRows + @@ROWCOUNT
 			
+			-- Updates the question in the SmileyQuestions with new data
 			UPDATE SmileyQuestions SET NumberOfSmiley = @NumberOfSmiley WHERE Id = @Id;   
+			-- Add the number of rows affected
 			SET @totalRows = @totalRows + @@ROWCOUNT
 
+			-- If affected rows = 2, update the currentState with new values sine the
+			-- question got updated successfuly
 			if (@totalRows = 2)
 				EXEC [dbo].Update_CurrentState;
 		COMMIT TRAN
@@ -285,15 +331,23 @@ BEGIN
 	BEGIN TRY	
 		BEGIN TRAN
 			SET XACT_ABORT ON;
+			
+			-- Set the totlaRows variable to track number of rows changed
 			DECLARE @totalRows INT;
 			SET @totalRows = 0;
 			
+			-- Deletes a question from the StarQuestions table
 			DELETE FROM StarQuestions WHERE Id = @Id;   
+			-- Add the number of rows affected
 			SET @totalRows = @totalRows + @@ROWCOUNT
 			
+			-- Deletes a question from the main questions table
 			DELETE FROM AllQuestions WHERE Id = @Id AND Type = 'Star';
+			-- Add the number of rows affected
 			SET @totalRows = @totalRows + @@ROWCOUNT
-
+			
+			-- If affected rows = 2, update the currentState with new values sine the
+			-- question got updated successfuly
 			if (@totalRows = 2)
 				EXEC [dbo].Update_CurrentState;
 		COMMIT TRAN
@@ -312,15 +366,23 @@ BEGIN
 	BEGIN TRY	
 		BEGIN TRAN
 			SET XACT_ABORT ON;
+
+			-- Set the totlaRows variable to track number of rows changed
 			DECLARE @totalRows INT;
 			SET @totalRows = 0;
 			
+			-- Deletes a question from the SliderQuestions table
 			DELETE FROM SliderQuestions WHERE Id = @Id;   
+			-- Add the number of rows affected
 			SET @totalRows = @totalRows + @@ROWCOUNT
 			
+			-- Deletes a question from the main questions table
 			DELETE FROM AllQuestions WHERE Id = @Id AND Type = 'Slider';  
+			-- Add the number of rows affected
 			SET @totalRows = @totalRows + @@ROWCOUNT
 
+			-- If affected rows = 2, update the currentState with new values sine the
+			-- question got updated successfuly
 			if (@totalRows = 2)
 				EXEC [dbo].Update_CurrentState;
 		COMMIT TRAN
@@ -339,14 +401,23 @@ BEGIN
 	BEGIN TRY	
 		BEGIN TRAN
 			SET XACT_ABORT ON;
+			
+			-- Set the totlaRows variable to track number of rows changed
 			DECLARE @totalRows INT;
 			SET @totalRows = 0;
 
+			-- Deletes a question from the SmileyQuestions table
 			DELETE FROM SmileyQuestions WHERE Id = @Id;
-			SET @totalRows = @totalRows + @@ROWCOUNT
-			DELETE FROM AllQuestions WHERE Id = @Id AND Type = 'Smiley';  
+			-- Add the number of rows affected
 			SET @totalRows = @totalRows + @@ROWCOUNT
 
+			-- Deletes a question from the main questions table
+			DELETE FROM AllQuestions WHERE Id = @Id AND Type = 'Smiley';  
+			-- Add the number of rows affected
+			SET @totalRows = @totalRows + @@ROWCOUNT
+
+			-- If affected rows = 2, update the currentState with new values sine the
+			-- question got updated successfuly
 			if (@totalRows = 2)
 				EXEC [dbo].Update_CurrentState;
 		COMMIT TRAN
