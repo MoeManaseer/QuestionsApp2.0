@@ -35,7 +35,7 @@ namespace QuestionsController
                 CurrentSortDirection = ListSortDirection.Ascending;
                 CurrentSortValueEnum = (int) SortableValueNames.Id;
                 UpdateDataThread = new Thread(UpdateDataThreadCall);
-                UpdateDataThread.Start();
+                UpdateDataThread.IsBackground = true;
             }
             catch (Exception tException)
             {
@@ -50,41 +50,25 @@ namespace QuestionsController
         {
             try
             {
-                // Sleep this thread for 10 seconds
-                Thread.Sleep(10000);
-
-                int tResultCode = UpdateQuestionsData();
-
-                // If new data cameback, invoke the UI to update It's data
-                if (tResultCode == (int)ResultCodesEnum.SUCCESS)
+                while (true)
                 {
-                    UpdateData?.Invoke(this, new EventArgs());
-                }
+                    try
+                    {
+                        // Sleep this thread for 10 seconds
+                        Thread.Sleep(10000);
 
-                // Recall the function so that the data keeps updating every 10 seconds
-                UpdateDataThreadCall();
-            }
-            catch (Exception tException)
-            {
-                Logger.WriteExceptionMessage(tException);
-            }
-        }
+                        int tResultCode = UpdateQuestionsData();
 
-        /// <summary>
-        /// The timer onElapsed function that fires whenever the timer finishes It's interval
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnTimedEvent(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                int tResultCode = UpdateQuestionsData();
-
-                // If new data cameback, invoke the UI to update It's data
-                if (tResultCode == (int)ResultCodesEnum.SUCCESS)
-                {
-                    UpdateData?.Invoke(this, new EventArgs());
+                        // If new data cameback, invoke the UI to update It's data
+                        if (tResultCode == (int)ResultCodesEnum.SUCCESS)
+                        {
+                            UpdateData?.Invoke(this, new EventArgs());
+                        }
+                    }
+                    catch (Exception tException)
+                    {
+                        Logger.WriteExceptionMessage(tException);
+                    }
                 }
             }
             catch (Exception tException)
@@ -106,6 +90,12 @@ namespace QuestionsController
                 // Create a new instance of the List so that data Isn't duplicated 
                 QuestionsList = new List<Question>();
                 tResultCode = DatabaseController.GetData(QuestionsList);
+
+                // Start the automatic refresh of data after the data is initially fetched.
+                if (!UpdateDataThread.IsAlive)
+                {
+                    UpdateDataThread.Start();
+                }
             }
             catch (Exception tException)
             {

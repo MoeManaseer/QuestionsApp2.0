@@ -91,7 +91,7 @@ namespace QuestionEntities
                 tDataDictionary.Add(StartValueKey, StartValue.ToString());
                 tDataDictionary.Add(EndValueKey, EndValue.ToString());
                 tDataDictionary.Add(StartValueCaptionKey, StartValueCaption);
-                tDataDictionary.Add(StartValueKey, EndValueCaptionKey);
+                tDataDictionary.Add(EndValueCaptionKey, EndValueCaption);
             }
             catch (Exception tException)
             {
